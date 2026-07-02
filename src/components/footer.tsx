@@ -54,12 +54,15 @@ export function Footer() {
           <p className="text-[11px] text-white/20">
             © {new Date().getFullYear()} Print Profit System™. Tous droits réservés.
           </p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap gap-6">
             <Link href="/mentions-legales" className={`${footerLinkClass} text-[11px]`}>
               Mentions légales
             </Link>
             <Link href="/confidentialite" className={`${footerLinkClass} text-[11px]`}>
               Politique de confidentialité
+            </Link>
+            <Link href="/conditions-generales-de-vente" className={`${footerLinkClass} text-[11px]`}>
+              CGV
             </Link>
           </div>
         </div>

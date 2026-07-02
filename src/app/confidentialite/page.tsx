@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import { CONTACT_EMAIL } from "@/lib/site-config";
+import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
+import { LegalList } from "@/components/legal/legal-list";
+import { CompanyBlock } from "@/components/legal/company-block";
+import { CONTACT_EMAIL_LEGAL } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Politique de confidentialité",
@@ -8,99 +11,156 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-const sections = [
+const sections: LegalSection[] = [
   {
-    title: "Responsable du traitement",
-    body: [
-      "[À COMPLÉTER] Raison sociale — Print Profit System™",
-      "[À COMPLÉTER] Adresse",
-      `Contact : ${CONTACT_EMAIL}`,
-    ],
+    heading: "1. Introduction",
+    content: (
+      <p>
+        La présente politique de confidentialité a pour objectif d&apos;informer les utilisateurs du
+        site et des services proposés par Shinkéo sur la collecte, l&apos;utilisation et la protection
+        de leurs données personnelles.
+      </p>
+    ),
   },
   {
-    title: "Données collectées",
-    body: [
-      "Via le formulaire de contact du site, nous collectons : nom, entreprise, téléphone (facultatif), email et le message que vous nous adressez.",
-      "Aucune autre donnée personnelle n'est collectée à votre insu sur ce site.",
-    ],
-  },
-  {
-    title: "Finalités du traitement",
-    body: [
-      "Ces données sont utilisées exclusivement pour répondre à votre demande de contact ou de rappel, et pour assurer le suivi commercial de votre dossier si vous devenez client.",
-    ],
-  },
-  {
-    title: "Base légale",
-    body: [
-      "Le traitement repose sur votre consentement, exprimé par l'envoi volontaire du formulaire de contact (article 6.1.a du RGPD).",
-    ],
-  },
-  {
-    title: "Durée de conservation",
-    body: [
-      "[À COMPLÉTER] Les données issues du formulaire de contact sont conservées pendant [durée à préciser, ex. 3 ans à compter du dernier contact] avant suppression ou anonymisation.",
-    ],
-  },
-  {
-    title: "Destinataires des données",
-    body: [
-      "Vos données sont transmises uniquement à Print Profit System™ (par email) et, le cas échéant, à ses outils internes de gestion de la relation client (CRM/automatisation). Elles ne sont jamais vendues ni cédées à des tiers à des fins commerciales.",
-    ],
-  },
-  {
-    title: "Vos droits",
-    body: [
-      "Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation et d'opposition concernant vos données personnelles.",
+    heading: "2. Responsable du traitement",
+    content: (
       <>
-        Pour exercer ces droits, contactez-nous à {CONTACT_EMAIL}. Vous disposez également du droit
-        d&apos;introduire une réclamation auprès de la{" "}
-        <a
-          href="https://www.cnil.fr"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gold-600 underline underline-offset-2 hover:text-gold-400"
-        >
-          CNIL
-        </a>
-        .
-      </>,
-    ],
+        <p>Le responsable du traitement des données est :</p>
+        <CompanyBlock />
+      </>
+    ),
   },
   {
-    title: "Cookies",
-    body: [
-      "[À COMPLÉTER] Décrire ici les cookies déposés (mesure d'audience, etc.) si un outil analytique est ajouté au site. En l'état, ce site ne dépose pas de cookie de suivi publicitaire.",
-    ],
+    heading: "3. Données collectées",
+    content: (
+      <>
+        <p>Nous pouvons collecter les données suivantes :</p>
+        <LegalList
+          items={[
+            "Nom et prénom",
+            "Adresse email",
+            "Informations de paiement (via des prestataires sécurisés)",
+            "Données de connexion à l'application",
+            "Données d'utilisation du service",
+          ]}
+        />
+      </>
+    ),
+  },
+  {
+    heading: "4. Finalité de la collecte",
+    content: (
+      <>
+        <p>Les données collectées sont utilisées pour :</p>
+        <LegalList
+          items={[
+            "Fournir l'accès aux produits et services",
+            "Gérer les commandes et abonnements",
+            "Assurer le support client",
+            "Envoyer des communications (emails, newsletters)",
+            "Améliorer les services proposés",
+          ]}
+        />
+      </>
+    ),
+  },
+  {
+    heading: "5. Base légale",
+    content: (
+      <>
+        <p>Le traitement des données repose sur :</p>
+        <LegalList
+          items={[
+            "l'exécution du contrat (achat, abonnement)",
+            "le consentement (newsletter, cookies)",
+            "l'intérêt légitime (amélioration des services)",
+          ]}
+        />
+      </>
+    ),
+  },
+  {
+    heading: "6. Hébergement et sous-traitants",
+    content: (
+      <>
+        <p>Les données peuvent être traitées par les services suivants :</p>
+        <LegalList
+          items={[
+            "Systeme.io (hébergement, tunnel de vente)",
+            "Stripe (paiement sécurisé)",
+            "Make (automatisation)",
+            "Zite / Fillout (application et base de données)",
+          ]}
+        />
+        <p>Ces prestataires respectent les normes de sécurité en vigueur.</p>
+      </>
+    ),
+  },
+  {
+    heading: "7. Conservation des données",
+    content: (
+      <p>
+        Les données sont conservées pendant la durée nécessaire à la relation commerciale et
+        conformément aux obligations légales.
+      </p>
+    ),
+  },
+  {
+    heading: "8. Sécurité",
+    content: (
+      <p>
+        Nous mettons en œuvre des mesures techniques et organisationnelles afin de protéger les
+        données contre tout accès non autorisé, perte ou divulgation.
+      </p>
+    ),
+  },
+  {
+    heading: "9. Droits des utilisateurs",
+    content: (
+      <>
+        <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+        <LegalList
+          items={[
+            "Droit d'accès",
+            "Droit de rectification",
+            "Droit de suppression",
+            "Droit d'opposition",
+            "Droit à la limitation du traitement",
+          ]}
+        />
+        <p>Pour exercer vos droits, contactez : {CONTACT_EMAIL_LEGAL}</p>
+      </>
+    ),
+  },
+  {
+    heading: "10. Cookies",
+    content: (
+      <>
+        <p>Le site peut utiliser des cookies afin de :</p>
+        <LegalList
+          items={[
+            "assurer le bon fonctionnement du site",
+            "analyser l'audience",
+            "améliorer l'expérience utilisateur",
+          ]}
+        />
+        <p>Vous pouvez configurer votre navigateur pour refuser les cookies.</p>
+      </>
+    ),
+  },
+  {
+    heading: "11. Modification de la politique",
+    content: (
+      <p>La présente politique peut être modifiée à tout moment afin de rester conforme à la réglementation.</p>
+    ),
+  },
+  {
+    heading: "12. Droit applicable",
+    content: <p>La présente politique est soumise au droit français.</p>,
   },
 ];
 
 export default function ConfidentialitePage() {
-  return (
-    <section className="bg-white py-32">
-      <div className="cnt-n">
-        <h1 className="mb-4 font-display text-[clamp(2rem,3.5vw,2.875rem)] font-bold leading-snug tracking-tight text-navy-800">
-          Politique de confidentialité
-        </h1>
-        <p className="mb-14 text-sm text-neutral-400">
-          Dernière mise à jour&nbsp;: [À COMPLÉTER — date de publication]
-        </p>
-
-        <div className="flex flex-col gap-12">
-          {sections.map((section) => (
-            <div key={section.title}>
-              <h2 className="mb-4 font-display text-xl font-bold text-navy-800">{section.title}</h2>
-              <div className="flex flex-col gap-2.5">
-                {section.body.map((line, index) => (
-                  <p key={index} className="text-md leading-loose text-neutral-700">
-                    {line}
-                  </p>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  return <LegalPage title="Politique de confidentialité" updated="2 juillet 2026" sections={sections} />;
 }

@@ -1,75 +1,127 @@
 import type { Metadata } from "next";
-import { CONTACT_EMAIL } from "@/lib/site-config";
+import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
+import { LegalList } from "@/components/legal/legal-list";
+import { CompanyBlock } from "@/components/legal/company-block";
+import { CONTACT_EMAIL_LEGAL, HOST } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Mentions légales",
-  description: "Mentions légales de Print Profit System™.",
+  description: "Mentions légales de Print Profit System™, édité par Shinkéo SAS.",
   alternates: { canonical: "/mentions-legales" },
   robots: { index: true, follow: true },
 };
 
-const sections = [
+const sections: LegalSection[] = [
   {
-    title: "Éditeur du site",
-    body: [
-      "[À COMPLÉTER] Raison sociale — Print Profit System™",
-      "[À COMPLÉTER] Forme juridique (SASU, EI, EURL…)",
-      "[À COMPLÉTER] Adresse du siège social",
-      "[À COMPLÉTER] SIRET",
-      "[À COMPLÉTER] Numéro de TVA intracommunautaire",
-      "[À COMPLÉTER] Capital social (si applicable)",
-    ],
+    heading: "1. Éditeur du site",
+    content: (
+      <>
+        <p>Le présent site est édité par :</p>
+        <CompanyBlock />
+      </>
+    ),
   },
   {
-    title: "Directeur de la publication",
-    body: ["[À COMPLÉTER] Nom du responsable de publication — Olivier Puyravaud"],
+    heading: "2. Hébergement",
+    content: (
+      <>
+        <p>Le site est hébergé par :</p>
+        <p>
+          {HOST.name}
+          <br />
+          {HOST.legalName}
+          <br />
+          {HOST.address}
+        </p>
+      </>
+    ),
   },
   {
-    title: "Hébergement",
-    body: [
-      "[À COMPLÉTER] Nom de l'hébergeur (ex. Vercel Inc.)",
-      "[À COMPLÉTER] Adresse de l'hébergeur",
-    ],
+    heading: "3. Activité",
+    content: (
+      <>
+        <p>Le site propose :</p>
+        <LegalList
+          items={[
+            "la vente de produits numériques (ebooks, fiches, ressources)",
+            "l'accès à une application en ligne (calculateur de pertes)",
+            "des services liés à l'optimisation des performances en impression numérique",
+          ]}
+        />
+      </>
+    ),
   },
   {
-    title: "Propriété intellectuelle",
-    body: [
-      "L'ensemble des contenus présents sur ce site (textes, marques, logos, illustrations) est la propriété exclusive de Print Profit System™, sauf mention contraire. Toute reproduction, représentation ou diffusion, en tout ou partie, sans autorisation préalable, est interdite.",
-      "« Print Profit System™ », « Pertes Invisibles™ », « Journées d'Immersion Terrain™ » et « Print Profit Accelerator™ » sont des marques utilisées par Print Profit System™.",
-    ],
+    heading: "4. Propriété intellectuelle",
+    content: (
+      <>
+        <p>
+          L&apos;ensemble des contenus présents sur le site (textes, images, graphismes, logos, vidéos,
+          outils, application) est la propriété exclusive de Shinkéo.
+        </p>
+        <p>
+          Toute reproduction, diffusion, modification ou utilisation, même partielle, sans autorisation
+          préalable est strictement interdite.
+        </p>
+      </>
+    ),
   },
   {
-    title: "Contact",
-    body: [`Pour toute question relative aux présentes mentions légales : ${CONTACT_EMAIL}`],
+    heading: "5. Responsabilité",
+    content: (
+      <>
+        <p>L&apos;éditeur ne saurait être tenu responsable :</p>
+        <LegalList
+          items={[
+            "des erreurs ou omissions dans les informations diffusées",
+            "d'une mauvaise utilisation des produits ou services",
+            "des dommages indirects résultant de l'utilisation du site",
+          ]}
+        />
+        <p>L&apos;utilisateur est seul responsable de l&apos;utilisation qu&apos;il fait des informations et services proposés.</p>
+      </>
+    ),
+  },
+  {
+    heading: "6. Données personnelles",
+    content: (
+      <>
+        <p>
+          Les informations collectées sur le site sont utilisées dans le cadre de la relation
+          commerciale avec les utilisateurs.
+        </p>
+        <p>Elles ne sont jamais revendues à des tiers.</p>
+        <p>
+          Conformément à la réglementation en vigueur (RGPD), vous disposez d&apos;un droit d&apos;accès,
+          de modification et de suppression de vos données personnelles.
+        </p>
+        <p>Pour exercer ce droit, vous pouvez contacter : {CONTACT_EMAIL_LEGAL}</p>
+      </>
+    ),
+  },
+  {
+    heading: "7. Cookies",
+    content: (
+      <>
+        <p>Le site peut utiliser des cookies à des fins de fonctionnement, d&apos;analyse ou de marketing.</p>
+        <p>L&apos;utilisateur peut configurer son navigateur pour refuser les cookies.</p>
+      </>
+    ),
+  },
+  {
+    heading: "8. Droit applicable",
+    content: (
+      <>
+        <p>Le présent site est soumis au droit français.</p>
+        <p>
+          En cas de litige, les tribunaux compétents seront ceux du ressort du siège social de
+          l&apos;éditeur.
+        </p>
+      </>
+    ),
   },
 ];
 
 export default function MentionsLegalesPage() {
-  return (
-    <section className="bg-white py-32">
-      <div className="cnt-n">
-        <h1 className="mb-4 font-display text-[clamp(2rem,3.5vw,2.875rem)] font-bold leading-snug tracking-tight text-navy-800">
-          Mentions légales
-        </h1>
-        <p className="mb-14 text-sm text-neutral-400">
-          Dernière mise à jour&nbsp;: [À COMPLÉTER — date de publication]
-        </p>
-
-        <div className="flex flex-col gap-12">
-          {sections.map((section) => (
-            <div key={section.title}>
-              <h2 className="mb-4 font-display text-xl font-bold text-navy-800">{section.title}</h2>
-              <div className="flex flex-col gap-2.5">
-                {section.body.map((line, index) => (
-                  <p key={index} className="text-md leading-loose text-neutral-700">
-                    {line}
-                  </p>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  return <LegalPage title="Mentions légales" updated="2 juillet 2026" sections={sections} />;
 }
