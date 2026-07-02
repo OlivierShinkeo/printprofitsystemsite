@@ -3,9 +3,9 @@ export const SITE_NAME = "Print Profit System™";
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://printprofitsystem.fr";
 
-/** Placeholder until the real scheduling link is provided — update via env var. */
 export const CALENDLY_URL =
-  process.env.NEXT_PUBLIC_CALENDLY_URL ?? "https://calendly.com/printprofitsystem/30min";
+  process.env.NEXT_PUBLIC_CALENDLY_URL ??
+  "https://calendly.com/printprofitsystem/appel-de-decouverte-print-profit-system";
 
 /** Marketing/support inbox, used throughout the site's CTAs and footer. */
 export const CONTACT_EMAIL = "contact@printprofitsystem.fr";

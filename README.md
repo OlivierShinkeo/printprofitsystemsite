@@ -62,9 +62,9 @@ Voir `.env.example` pour la liste complète. Résumé :
 | Variable | Rôle | Obligatoire ? |
 |---|---|---|
 | `NEXT_PUBLIC_SITE_URL` | URL publique du site (sitemap, OpenGraph, JSON-LD) | Recommandé en prod |
-| `NEXT_PUBLIC_CALENDLY_URL` | Lien de prise de rendez-vous utilisé par tous les CTA "Demander un rappel" | Recommandé — remplace le placeholder `calendly.com/printprofitsystem/30min` |
+| `NEXT_PUBLIC_CALENDLY_URL` | Lien de prise de rendez-vous utilisé par tous les CTA "Demander un rappel" | Optionnel — a déjà le vrai lien Calendly en défaut, à ne changer que s'il évolue |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS` | Envoi d'email du formulaire de contact via Nodemailer | Optionnel — si absent, l'email est simplement ignoré (pas d'erreur pour le visiteur) |
-| `CONTACT_EMAIL_TO` | Adresse qui reçoit les demandes de contact | Optionnel (défaut : `SMTP_USER`) |
+| `CONTACT_EMAIL_TO` | Adresse qui reçoit les demandes de contact | Optionnel (défaut : `contact@printprofitsystem.fr`) |
 | `CONTACT_EMAIL_FROM` | Adresse d'expédition des emails | Optionnel (défaut : `SMTP_USER`) |
 | `WEBHOOK_URL` | URL de webhook Make/n8n qui reçoit chaque soumission en JSON | Optionnel — si absent, aucun appel n'est fait |
 

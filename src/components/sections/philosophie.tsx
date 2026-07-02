@@ -1,5 +1,6 @@
 import { SectionLabel } from "@/components/ui/section-label";
 import { FadeIn } from "@/components/ui/fade-in";
+import { cn } from "@/lib/cn";
 
 const convictions = [
   {
@@ -45,13 +46,14 @@ export function Philosophie() {
           </p>
         </div>
 
-        <div className="mb-14 grid grid-cols-3 overflow-hidden rounded-lg border border-neutral-100">
+        <div className="mb-14 grid grid-cols-1 overflow-hidden rounded-lg border border-neutral-100 sm:grid-cols-3">
           {convictions.map((item, index) => (
             <div
               key={item.title}
-              className={
-                index < convictions.length - 1 ? "border-r border-neutral-100 px-8 py-7" : "px-8 py-7"
-              }
+              className={cn(
+                "border-neutral-100 px-8 py-7",
+                index < convictions.length - 1 && "border-b sm:border-r sm:border-b-0"
+              )}
             >
               <div className="mb-2.5 font-display text-2xl font-bold leading-none text-gold-600">
                 {item.title}

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { validateContact, type ContactPayload } from "@/lib/contact-schema";
 import { clientIpFrom, isRateLimited } from "@/lib/rate-limit";
+import { CONTACT_EMAIL } from "@/lib/site-config";
 
 export const runtime = "nodejs";
 
@@ -106,8 +107,10 @@ async function sendEmail(payload: ContactPayload) {
   const transporter = getTransporter();
   if (!transporter) return; // SMTP not configured in this environment yet.
 
-  const to = process.env.CONTACT_EMAIL_TO ?? process.env.SMTP_USER!;
-  const from = process.env.CONTACT_EMAIL_FROM ?? process.env.SMTP_USER!;
+  // Defaults to the site's official contact address so submissions land in
+  // the right inbox even if CONTACT_EMAIL_TO is never explicitly set.
+  const to = process.env.CONTACT_EMAIL_TO || CONTACT_EMAIL;
+  const from = process.env.CONTACT_EMAIL_FROM || process.env.SMTP_USER!;
 
   await transporter.sendMail({
     to,
