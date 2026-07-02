@@ -1,0 +1,181 @@
+@import "tailwindcss";
+
+/* ============================================================
+   PRINT PROFIT SYSTEM™ — Design tokens
+   Ported 1:1 from the Claude Design handoff bundle
+   (project/_ds/.../tokens/*.css). Do not change these values
+   without checking against the source design system.
+   ============================================================ */
+@theme {
+  /* Brand navy */
+  --color-navy-950: #080f1c;
+  --color-navy-900: #0f1a2e;
+  --color-navy-800: #162040;
+  --color-navy-700: #1d2d56;
+  --color-navy-600: #263872;
+  --color-navy-500: #344d96;
+
+  /* Brand gold */
+  --color-gold-800: #7a5a18;
+  --color-gold-700: #9c7522;
+  --color-gold-600: #b8922e;
+  --color-gold-500: #c8a048;
+  --color-gold-400: #d4af72;
+  --color-gold-300: #dfc38e;
+  --color-gold-200: #edd9b4;
+  --color-gold-100: #f5edd4;
+  --color-gold-50: #fbf7ee;
+
+  /* Neutrals (warm-tinted) */
+  --color-neutral-950: #0c0c0a;
+  --color-neutral-900: #1a1917;
+  --color-neutral-800: #2c2a27;
+  --color-neutral-700: #3f3c38;
+  --color-neutral-600: #565249;
+  --color-neutral-500: #716d64;
+  --color-neutral-400: #9a968d;
+  --color-neutral-300: #c0bbb3;
+  --color-neutral-200: #dad6cf;
+  --color-neutral-100: #edebe6;
+  --color-neutral-50: #f6f4f0;
+
+  /* Surface */
+  --color-cream: #f8f5ef;
+  --color-paper: #f2eee6;
+
+  /* Semantic states */
+  --color-success: #2a6b4a;
+  --color-error: #8b2020;
+
+  /* Breakpoints — match the prototype's two responsive tiers exactly */
+  --breakpoint-sm: 580px;
+  --breakpoint-lg: 960px;
+
+  /* Type scale — matches DS typography.css (adds `md` between sm/lg) */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+  --text-5xl: 3.75rem;
+  --text-6xl: 4.5rem;
+  --text-7xl: 5.5rem;
+
+  /* Letter spacing */
+  --tracking-tightest: -0.03em;
+  --tracking-tight: -0.02em;
+  --tracking-snug: -0.015em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.03em;
+  --tracking-wider: 0.07em;
+  --tracking-widest: 0.12em;
+
+  /* Line height */
+  --leading-none: 1;
+  --leading-tight: 1.08;
+  --leading-snug: 1.2;
+  --leading-normal: 1.4;
+  --leading-relaxed: 1.65;
+  --leading-loose: 1.85;
+
+  /* Radius — almost-square, institutional feel */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+
+  /* Shadows — warm-tinted, never cold drops */
+  --shadow-xs: 0 1px 2px rgba(15, 26, 46, 0.06);
+  --shadow-sm: 0 2px 6px rgba(15, 26, 46, 0.08);
+  --shadow-md: 0 4px 16px rgba(15, 26, 46, 0.1), 0 1px 4px rgba(15, 26, 46, 0.06);
+  --shadow-lg: 0 8px 32px rgba(15, 26, 46, 0.12), 0 2px 8px rgba(15, 26, 46, 0.06);
+  --shadow-xl: 0 16px 48px rgba(15, 26, 46, 0.14), 0 4px 16px rgba(15, 26, 46, 0.08);
+  --shadow-2xl: 0 24px 64px rgba(15, 26, 46, 0.18), 0 8px 24px rgba(15, 26, 46, 0.1);
+  --shadow-gold-sm: 0 0 0 1px rgba(212, 175, 114, 0.3);
+  --shadow-gold-md: 0 0 0 2px rgba(212, 175, 114, 0.25), 0 4px 16px rgba(212, 175, 114, 0.15);
+  --shadow-gold-lg: 0 0 0 2px rgba(212, 175, 114, 0.3), 0 8px 32px rgba(212, 175, 114, 0.2);
+}
+
+/* Font variables come from next/font (see layout.tsx) — `inline` keeps
+   these as live references instead of baking in a build-time value. */
+@theme inline {
+  --font-display: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-inter), "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  background: var(--color-white);
+  color: var(--color-navy-800);
+}
+
+/* Content containers — match the prototype's .cnt / .cnt-n exactly */
+.cnt {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+.cnt-n {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+@media (max-width: 960px) {
+  .cnt,
+  .cnt-n {
+    padding: 0 24px;
+  }
+}
+
+/* Form fields on dark surfaces */
+.dark-input,
+.dark-textarea {
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.dark-input:focus,
+.dark-textarea:focus {
+  border-color: rgba(212, 175, 114, 0.55) !important;
+  box-shadow: 0 0 0 3px rgba(212, 175, 114, 0.08);
+}
+.dark-input::placeholder,
+.dark-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.22);
+  font-size: 14px;
+}
+
+/* Scroll-fade-up animation, gated by prefers-reduced-motion */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+[data-animate].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Focus visibility for keyboard users (WCAG) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-gold-400);
+  outline-offset: 2px;
+}
