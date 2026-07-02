@@ -6,7 +6,7 @@ import { Methode } from "@/components/sections/methode";
 import { PertesInvisibles } from "@/components/sections/pertes-invisibles";
 import { Pourquoi } from "@/components/sections/pourquoi";
 import { Olivier } from "@/components/sections/olivier";
-import { Resultats } from "@/components/sections/resultats";
+import { Garantie } from "@/components/sections/garantie";
 import { Faq } from "@/components/sections/faq";
 import { Contact } from "@/components/sections/contact";
 
@@ -21,7 +21,7 @@ export default function Home() {
       <PertesInvisibles />
       <Pourquoi />
       <Olivier />
-      <Resultats />
+      <Garantie />
       <Faq />
       <Contact />
     </>

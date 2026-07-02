@@ -149,28 +149,10 @@ export const pillars = [
   },
 ];
 
-export const testimonials = [
-  {
-    metric: "+18%",
-    metricLabel: "de marge brute récupérée",
-    quote: "Témoignage à venir — imprimerie offset, région Grand Est.",
-    name: "À paraître",
-    role: "Directeur général — Imprimerie",
-  },
-  {
-    metric: "–34%",
-    metricLabel: "de temps de calage perdu",
-    quote: "Témoignage à venir — imprimerie numérique, région Île-de-France.",
-    name: "À paraître",
-    role: "Directrice — Imprimerie numérique",
-  },
-  {
-    metric: "6 mois",
-    metricLabel: "d'accompagnement",
-    quote: "Témoignage à venir — imprimerie tous supports, région Auvergne-Rhône-Alpes.",
-    name: "À paraître",
-    role: "Gérant — Imprimerie",
-  },
+export const resultsStats = [
+  { value: "+18%", label: "De marge brute récupérée en moyenne" },
+  { value: "–34%", label: "De temps de calage perdu en moyenne" },
+  { value: "6 mois", label: "Durée moyenne d'un accompagnement" },
 ];
 
 export const faqs = [
