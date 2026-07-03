@@ -17,7 +17,10 @@ export function Pourquoi() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {pillars.map((pillar) => (
             <div key={pillar.num} className="flex flex-col gap-4">
-              <div className="font-display text-[3.25rem] font-extrabold leading-none tracking-tight text-navy-800/7">
+              <div
+                aria-hidden="true"
+                className="font-display text-[3.25rem] font-extrabold leading-none tracking-tight text-navy-800/7"
+              >
                 {pillar.num}
               </div>
               <div className="h-0.5 w-7 rounded-sm bg-gold-400" />

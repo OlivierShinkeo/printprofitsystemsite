@@ -57,7 +57,7 @@ export function Contact() {
 
           {/* Option B : Formulaire */}
           <div>
-            <div className="mb-7 text-[10px] font-semibold uppercase tracking-widest text-white/35">
+            <div className="mb-7 text-[10px] font-semibold uppercase tracking-widest text-white/50">
               Option 2 — Nous écrire
             </div>
             <ContactForm />

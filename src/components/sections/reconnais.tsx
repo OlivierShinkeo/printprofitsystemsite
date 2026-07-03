@@ -22,7 +22,10 @@ export function Reconnais() {
               key={sit.n}
               className="rounded-lg border-l-[3px] border-gold-400 bg-white px-9 py-8 shadow-[0_2px_12px_rgba(15,26,46,0.06)]"
             >
-              <div className="mb-3.5 font-display text-4xl font-extrabold leading-none tracking-tight text-gold-400/18">
+              <div
+                aria-hidden="true"
+                className="mb-3.5 font-display text-4xl font-extrabold leading-none tracking-tight text-gold-400/18"
+              >
                 {sit.n}
               </div>
               <p className="text-lg leading-loose italic text-neutral-700">{sit.text}</p>

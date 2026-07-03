@@ -87,13 +87,13 @@ export function PertesInvisibles() {
                     <div className="mt-[7px] h-1 w-1 flex-shrink-0 rounded-full bg-gold-400" />
                     <div>
                       <span className="text-sm font-semibold text-white/82">{ex.title}</span>
-                      <span className="ml-2 text-[0.8125rem] text-white/38">{ex.stat}</span>
+                      <span className="ml-2 text-[0.8125rem] text-white/50">{ex.stat}</span>
                     </div>
                   </div>
                 ))}
               </div>
               <div className="border-t border-white/6 pt-5">
-                <p className="text-[0.8125rem] italic leading-relaxed text-white/38">
+                <p className="text-[0.8125rem] italic leading-relaxed text-white/50">
                   Invisibles dans votre comptabilité. Absents de vos tableaux de bord. Pourtant bien réels.
                 </p>
               </div>

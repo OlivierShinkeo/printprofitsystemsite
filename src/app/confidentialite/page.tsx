@@ -1,15 +1,14 @@
-import type { Metadata } from "next";
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { LegalList } from "@/components/legal/legal-list";
 import { CompanyBlock } from "@/components/legal/company-block";
 import { CONTACT_EMAIL_LEGAL } from "@/lib/site-config";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: "Politique de confidentialité",
   description: "Politique de confidentialité et de protection des données de Print Profit System™.",
-  alternates: { canonical: "/confidentialite" },
-  robots: { index: true, follow: true },
-};
+  path: "/confidentialite",
+});
 
 const sections: LegalSection[] = [
   {

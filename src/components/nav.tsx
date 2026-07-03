@@ -101,6 +101,7 @@ export function Nav() {
               width={842}
               height={153}
               priority
+              fetchPriority="high"
               className="h-[34px] w-auto"
             />
           </Link>

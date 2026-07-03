@@ -17,18 +17,20 @@ export function Difference() {
 
         <div className="mx-auto grid max-w-[960px] grid-cols-1 overflow-hidden rounded-lg lg:grid-cols-2">
           <div className="border border-white/8 bg-white/4 px-11 py-12">
-            <div className="mb-8 text-[10px] font-semibold uppercase tracking-widest text-white/30">
+            <div className="mb-8 text-[10px] font-semibold uppercase tracking-widest text-white/50">
               L&apos;approche habituelle
             </div>
             <div className="flex flex-col gap-5.5">
               {notUsList.map((item) => (
                 <div key={item.label} className="flex items-start gap-4">
-                  <span className="mt-0.5 flex-shrink-0 text-sm text-white/20">—</span>
+                  <span aria-hidden="true" className="mt-0.5 flex-shrink-0 text-sm text-white/50">
+                    —
+                  </span>
                   <div>
                     <div className="leading-snug text-white/50 line-through decoration-white/15">
                       {item.label}
                     </div>
-                    <div className="mt-1 text-[0.8125rem] leading-snug text-white/28">{item.sub}</div>
+                    <div className="mt-1 text-[0.8125rem] leading-snug text-white/50">{item.sub}</div>
                   </div>
                 </div>
               ))}
@@ -42,7 +44,9 @@ export function Difference() {
             <div className="flex flex-col gap-5.5">
               {yesList.map((item) => (
                 <div key={item.label} className="flex items-start gap-4">
-                  <span className="mt-0.5 flex-shrink-0 text-sm text-gold-400">+</span>
+                  <span aria-hidden="true" className="mt-0.5 flex-shrink-0 text-sm text-gold-400">
+                    +
+                  </span>
                   <div>
                     <div className="font-medium leading-snug text-white">{item.label}</div>
                     <div className="mt-1 text-[0.8125rem] leading-snug text-white/50">{item.sub}</div>

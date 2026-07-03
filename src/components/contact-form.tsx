@@ -1,12 +1,13 @@
 "use client";
 
 import { useId, useState, type FormEvent } from "react";
+import { sendGAEvent } from "@next/third-parties/google";
 import { Button } from "@/components/ui/button";
 import { MAX_LENGTHS, validateContact, type ContactFieldErrors } from "@/lib/contact-schema";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-const labelClass = "mb-2.5 block text-[10px] font-semibold uppercase tracking-widest text-white/35";
+const labelClass = "mb-2.5 block text-[10px] font-semibold uppercase tracking-widest text-white/50";
 const fieldClass =
   "dark-input h-11 w-full rounded-md border border-white/10 bg-white/5 px-4 font-sans text-[15px] text-white";
 const errorClass = "mt-1.5 text-xs text-[#e08585]";
@@ -49,6 +50,7 @@ export function ContactForm() {
       });
 
       if (response.ok) {
+        sendGAEvent("event", "generate_lead");
         setStatus("success");
         return;
       }
@@ -213,7 +215,7 @@ export function ContactForm() {
         </Button>
       </div>
 
-      <p id={`${formId}-status`} role="status" aria-live="polite" className="text-[11px] leading-relaxed text-white/22">
+      <p id={`${formId}-status`} role="status" aria-live="polite" className="text-[11px] leading-relaxed text-white/50">
         {status === "error" ? <span className="text-[#e08585]">{errorMessage}</span> : (
           "Vos données ne sont pas transmises à des tiers. Réponse sous 48 h ouvrées."
         )}

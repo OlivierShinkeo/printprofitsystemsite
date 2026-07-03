@@ -1,14 +1,13 @@
-import type { Metadata } from "next";
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { LegalList } from "@/components/legal/legal-list";
 import { CompanyBlock } from "@/components/legal/company-block";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: "Conditions générales de vente",
   description: "Conditions générales de vente de Print Profit System™, édité par Shinkéo SAS.",
-  alternates: { canonical: "/conditions-generales-de-vente" },
-  robots: { index: true, follow: true },
-};
+  path: "/conditions-generales-de-vente",
+});
 
 const sections: LegalSection[] = [
   {

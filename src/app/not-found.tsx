@@ -10,7 +10,10 @@ export default function NotFound() {
   return (
     <section className="flex min-h-[70vh] items-center bg-navy-800 py-32">
       <div className="cnt-n text-center">
-        <div className="mb-7 font-display text-6xl font-extrabold leading-none tracking-tightest text-gold-400/25">
+        <div
+          aria-hidden="true"
+          className="mb-7 font-display text-6xl font-extrabold leading-none tracking-tightest text-gold-400/25"
+        >
           404
         </div>
         <h1 className="mb-6 font-display text-[clamp(2rem,3.5vw,2.875rem)] font-bold leading-snug tracking-tight text-white">

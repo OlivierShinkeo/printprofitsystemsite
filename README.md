@@ -97,6 +97,24 @@ pour développer/démontrer avant d'avoir les identifiants définitifs.
 - `npm audit` : 0 vulnérabilité (voir l'entrée `overrides.postcss` dans `package.json`, qui force
   la version de PostCSS embarquée par Next.js à une version corrigée).
 
+## Google Analytics 4
+
+Intégré via `@next/third-parties/google` (la méthode officielle recommandée par Next.js) dans
+`src/components/analytics/`. Measurement ID : `G-LVGFL2W8LE` (dans `src/lib/site-config.ts`).
+
+- **Chargement en production uniquement** — `GoogleAnalytics` (dans `google-analytics.tsx`) rend
+  `null` tant que `process.env.NODE_ENV !== "production"`. En `npm run dev`, aucun script GA n'est
+  injecté (vérifié : ni tag `<script>`, ni `window.dataLayer`).
+- **Suivi automatique des pages vues** — `ga-pageview-tracker.tsx` envoie un événement `page_view`
+  à chaque navigation côté client (`usePathname`/`useSearchParams`), car `<GoogleAnalytics>` ne
+  configure gtag qu'une fois au chargement initial — les navigations App Router ne rechargent pas
+  la page.
+- **Événement `generate_lead`** — envoyé depuis `contact-form.tsx` exactement quand l'API renvoie
+  un succès (juste avant `setStatus("success")`), sans autre changement de comportement du
+  formulaire.
+- Script chargé avec la stratégie par défaut de `next/script` (`afterInteractive`) — non bloquant,
+  injecté après que la page devient interactive.
+
 ## Design system → Tailwind
 
 Toutes les valeurs (couleurs, typographies, espacements, rayons, ombres, breakpoints) viennent du

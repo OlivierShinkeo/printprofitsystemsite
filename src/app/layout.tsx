@@ -5,6 +5,7 @@ import "./globals.css";
 import { SITE_URL, SITE_NAME, ORGANIZATION_JSON_LD } from "@/lib/site-config";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -72,6 +73,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_JSON_LD) }}
         />
+        <GoogleAnalytics />
       </body>
     </html>
   );

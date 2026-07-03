@@ -17,7 +17,7 @@ export function LegalPage({ title, updated, sections }: LegalPageProps) {
         <h1 className="mb-4 font-display text-[clamp(2rem,3.5vw,2.875rem)] font-bold leading-snug tracking-tight text-navy-800">
           {title}
         </h1>
-        {updated && <p className="mb-14 text-sm text-neutral-400">Dernière mise à jour&nbsp;: {updated}</p>}
+        {updated && <p className="mb-14 text-sm text-neutral-500">Dernière mise à jour&nbsp;: {updated}</p>}
 
         <div className="flex flex-col gap-12">
           {sections.map((section) => (

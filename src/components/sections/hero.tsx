@@ -37,7 +37,7 @@ export function Hero() {
                   Nous écrire
                 </Button>
               </div>
-              <p className="text-sm leading-relaxed text-white/35">
+              <p className="text-sm leading-relaxed text-white/50">
                 Premier échange de 30 minutes — sans engagement et sans pression commerciale.
                 <br />
                 L&apos;objectif est simplement de comprendre votre situation.
@@ -47,19 +47,19 @@ export function Hero() {
             <div className="flex flex-wrap gap-10 border-t border-white/8 pt-8">
               <div>
                 <div className="font-display text-4xl font-bold leading-none text-gold-400">+18%</div>
-                <div className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-white/30">
+                <div className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-white/50">
                   De marge récupérée
                 </div>
               </div>
               <div>
                 <div className="font-display text-4xl font-bold leading-none text-gold-400">6–12</div>
-                <div className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-white/30">
+                <div className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-white/50">
                   Mois d&apos;accompagnement
                 </div>
               </div>
               <div>
                 <div className="font-display text-4xl font-bold leading-none text-gold-400">10–100</div>
-                <div className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-white/30">
+                <div className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-white/50">
                   Salariés — cœur de cible
                 </div>
               </div>
@@ -76,12 +76,13 @@ export function Hero() {
                 width={400}
                 height={534}
                 priority
+                fetchPriority="high"
                 sizes="400px"
                 className="block h-auto w-full max-w-[400px] rounded-md"
               />
               <div className="absolute -bottom-6 left-5 right-5 rounded-md border border-gold-400/20 bg-navy-950/90 px-5 py-4 backdrop-blur-sm">
                 <div className="text-sm font-semibold text-white">Olivier Puyravaud</div>
-                <div className="mt-0.5 text-xs tracking-wide text-white/45">
+                <div className="mt-0.5 text-xs tracking-wide text-white/50">
                   Fondateur — Print Profit System™
                 </div>
               </div>

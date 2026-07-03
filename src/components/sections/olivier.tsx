@@ -66,7 +66,7 @@ export function Olivier() {
                 « Je préfère observer avant de proposer. Parce qu&apos;une bonne solution au mauvais
                 problème ne sert à rien. »
               </p>
-              <p className="mt-3.5 text-sm text-white/35">— Olivier Puyravaud</p>
+              <p className="mt-3.5 text-sm text-white/50">— Olivier Puyravaud</p>
             </div>
           </div>
         </div>

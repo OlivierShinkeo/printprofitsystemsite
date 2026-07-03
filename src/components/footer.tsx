@@ -18,13 +18,13 @@ export function Footer() {
               height={153}
               className="mb-5 h-[30px] w-auto"
             />
-            <p className="text-[0.9375rem] leading-relaxed text-white/34">
+            <p className="text-[0.9375rem] leading-relaxed text-white/50">
               Cabinet de conseil spécialisé dans la rentabilité des imprimeries de 10 à 100 salariés.
             </p>
           </div>
 
           <div className="flex flex-col gap-3.5">
-            <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/20">
+            <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/50">
               Navigation
             </div>
             {navLinks.map((link) => (
@@ -35,7 +35,7 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col gap-3.5">
-            <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/20">
+            <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/50">
               Contact
             </div>
             <a href={CALENDLY_URL} className={footerLinkClass} target="_blank" rel="noopener noreferrer">
@@ -51,7 +51,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-4 pt-8">
-          <p className="text-[11px] text-white/20">
+          <p className="text-[11px] text-white/50">
             © {new Date().getFullYear()} Print Profit System™. Tous droits réservés.
           </p>
           <div className="flex flex-wrap gap-6">

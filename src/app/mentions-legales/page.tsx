@@ -1,15 +1,14 @@
-import type { Metadata } from "next";
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { LegalList } from "@/components/legal/legal-list";
 import { CompanyBlock } from "@/components/legal/company-block";
 import { CONTACT_EMAIL_LEGAL, HOST } from "@/lib/site-config";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: "Mentions légales",
   description: "Mentions légales de Print Profit System™, édité par Shinkéo SAS.",
-  alternates: { canonical: "/mentions-legales" },
-  robots: { index: true, follow: true },
-};
+  path: "/mentions-legales",
+});
 
 const sections: LegalSection[] = [
   {
