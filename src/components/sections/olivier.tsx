@@ -10,10 +10,10 @@ export function Olivier() {
             <div className="relative">
               <div className="pointer-events-none absolute -inset-3 rounded-md border border-gold-400/18" />
               <Image
-                src="/images/portrait-noir.png"
+                src="/images/olivier-concentre-au-bureau.png"
                 alt="Olivier Puyravaud"
-                width={340}
-                height={454}
+                width={600}
+                height={800}
                 sizes="340px"
                 className="block h-auto w-full max-w-[340px] rounded-md"
               />
