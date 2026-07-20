@@ -153,6 +153,23 @@ body {
   font-size: 14px;
 }
 
+/* Form fields on light surfaces (admin / espace prospect) */
+.light-input,
+.light-textarea {
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.light-input:focus,
+.light-textarea:focus {
+  border-color: rgba(184, 146, 46, 0.6) !important;
+  box-shadow: 0 0 0 3px rgba(184, 146, 46, 0.12);
+}
+.light-input::placeholder,
+.light-textarea::placeholder {
+  color: rgba(22, 32, 64, 0.32);
+  font-size: 14px;
+}
+
 /* Scroll-fade-up animation, gated by prefers-reduced-motion */
 [data-animate] {
   opacity: 0;

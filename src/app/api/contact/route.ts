@@ -1,40 +1,10 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 import { validateContact, type ContactPayload } from "@/lib/contact-schema";
 import { clientIpFrom, isRateLimited } from "@/lib/rate-limit";
 import { CONTACT_EMAIL } from "@/lib/site-config";
+import { getTransporter, escapeHtml, sanitizeHeaderValue, defaultFromAddress } from "@/lib/email/transporter";
 
 export const runtime = "nodejs";
-
-let cachedTransporter: ReturnType<typeof nodemailer.createTransport> | null = null;
-
-function getTransporter() {
-  if (cachedTransporter) return cachedTransporter;
-
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) return null;
-
-  cachedTransporter = nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: Number(SMTP_PORT) || 587,
-    secure: process.env.SMTP_SECURE === "true",
-    auth: { user: SMTP_USER, pass: SMTP_PASS },
-  });
-  return cachedTransporter;
-}
-
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-/** Strips line breaks so user input can never inject extra email headers. */
-function sanitizeHeaderValue(value: string) {
-  return value.replace(/[\r\n]+/g, " ").trim();
-}
 
 export async function POST(request: Request) {
   if (isRateLimited(clientIpFrom(request))) {
@@ -110,7 +80,7 @@ async function sendEmail(payload: ContactPayload) {
   // Defaults to the site's official contact address so submissions land in
   // the right inbox even if CONTACT_EMAIL_TO is never explicitly set.
   const to = process.env.CONTACT_EMAIL_TO || CONTACT_EMAIL;
-  const from = process.env.CONTACT_EMAIL_FROM || process.env.SMTP_USER!;
+  const from = defaultFromAddress();
 
   await transporter.sendMail({
     to,
