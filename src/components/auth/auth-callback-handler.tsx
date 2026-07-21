@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { resolvePostAuthDestination } from "@/lib/auth/resolve-destination";
 
 interface AuthCallbackHandlerProps {
   /** Where to send the user once the session is established, if no `next` param is present. */
@@ -31,7 +32,6 @@ export function AuthCallbackHandler({
   lookupOwnAudit = false,
 }: AuthCallbackHandlerProps) {
   const router = useRouter();
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -62,29 +62,21 @@ export function AuthCallbackHandler({
 
       if (cancelled) return;
       if (!ok) {
-        setError(true);
+        router.replace(`${loginPath}?error=lien_invalide`);
         return;
       }
 
-      let next = explicitNext;
-      if (!next && lookupOwnAudit) {
-        const { data } = await supabase.from("audits").select("id").limit(1).maybeSingle();
-        next = data ? `/audit/${data.id}` : null;
-      }
+      const next =
+        explicitNext || (await resolvePostAuthDestination(supabase, { lookupOwnAudit, fallbackPath }));
 
-      if (!cancelled) router.replace(next || fallbackPath);
+      if (!cancelled) router.replace(next);
     }
 
     completeSignIn();
     return () => {
       cancelled = true;
     };
-  }, [router, fallbackPath, lookupOwnAudit]);
-
-  if (error) {
-    router.replace(`${loginPath}?error=lien_invalide`);
-    return null;
-  }
+  }, [router, fallbackPath, lookupOwnAudit, loginPath]);
 
   return (
     <p className="text-sm text-neutral-600" role="status" aria-live="polite">
