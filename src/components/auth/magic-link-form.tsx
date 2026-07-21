@@ -49,7 +49,7 @@ export function MagicLinkForm({ redirectBase, fallbackPath, lookupOwnAudit = fal
     const { error } = await supabase.auth.verifyOtp({
       email: email.trim(),
       token: code.trim(),
-      type: "email",
+      type: "magiclink",
     });
 
     if (error) {
