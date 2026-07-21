@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 interface MagicLinkFormProps {
   /** e.g. "/admin" or "/audit" — the callback route lives at `${redirectBase}/auth/callback`. */
   redirectBase: string;
-  /** Where to send the user once the 6-digit code is verified, if `lookupOwnAudit` doesn't apply. */
+  /** Where to send the user once the emailed code is verified, if `lookupOwnAudit` doesn't apply. */
   fallbackPath: string;
   /** Look up the signed-in prospect's own audit and redirect there instead of `fallbackPath`. */
   lookupOwnAudit?: boolean;
@@ -67,8 +67,8 @@ export function MagicLinkForm({ redirectBase, fallbackPath, lookupOwnAudit = fal
         <div className="rounded-md border border-gold-500/40 bg-gold-50 px-8 py-7 text-center">
           <p className="font-display text-lg font-semibold text-navy-800">Email envoyé</p>
           <p className="mt-2 text-sm leading-relaxed text-neutral-700">
-            Consultez la boîte {email} : cliquez sur le lien reçu, ou saisissez ci-dessous le code à
-            6 chiffres qu&apos;il contient (recommandé — certaines messageries invalident le lien en le
+            Consultez la boîte {email} : cliquez sur le lien reçu, ou saisissez ci-dessous le code
+            qu&apos;il contient (recommandé — certaines messageries invalident le lien en le
             pré-chargeant automatiquement).
           </p>
         </div>
@@ -79,7 +79,7 @@ export function MagicLinkForm({ redirectBase, fallbackPath, lookupOwnAudit = fal
               htmlFor={codeFieldId}
               className="mb-2.5 block text-[10px] font-semibold uppercase tracking-widest text-neutral-600"
             >
-              Code à 6 chiffres
+              Code reçu par email
             </label>
             <input
               id={codeFieldId}
@@ -87,10 +87,10 @@ export function MagicLinkForm({ redirectBase, fallbackPath, lookupOwnAudit = fal
               type="text"
               inputMode="numeric"
               autoComplete="one-time-code"
-              maxLength={6}
+              maxLength={12}
               value={code}
-              onChange={(event) => setCode(event.target.value.replace(/\D/g, "").slice(0, 6))}
-              placeholder="000000"
+              onChange={(event) => setCode(event.target.value.replace(/\D/g, "").slice(0, 12))}
+              placeholder="Code"
             />
           </div>
           {codeStatus === "error" && (
@@ -102,7 +102,7 @@ export function MagicLinkForm({ redirectBase, fallbackPath, lookupOwnAudit = fal
             variant="primary"
             size="lg"
             type="submit"
-            disabled={codeStatus === "submitting" || code.length !== 6}
+            disabled={codeStatus === "submitting" || code.length < 6}
           >
             {codeStatus === "submitting" ? "Vérification…" : "Valider le code"}
           </Button>
