@@ -30,44 +30,35 @@ export default async function AdminDashboardPage() {
         <p className="text-neutral-600">Aucun audit pour le moment.</p>
       ) : (
         <div className="overflow-x-auto rounded-md border border-neutral-200 bg-white">
-          <table className="w-full min-w-[720px] text-left text-sm">
+          <table className="w-full text-left text-sm">
             <thead className="border-b border-neutral-200 text-xs uppercase tracking-wider text-neutral-500">
               <tr>
-                <th className="px-5 py-3">Entreprise</th>
-                <th className="px-5 py-3">Contact</th>
-                <th className="px-5 py-3">Pays</th>
-                <th className="px-5 py-3">Statut</th>
-                <th className="px-5 py-3">Avancement</th>
-                <th className="px-5 py-3">Invité le</th>
-                <th className="px-5 py-3" />
+                <th className="px-3 py-2.5">Entreprise</th>
+                <th className="px-3 py-2.5">Contact</th>
+                <th className="px-3 py-2.5">Pays</th>
+                <th className="px-3 py-2.5">Statut</th>
+                <th className="px-3 py-2.5">Avanc.</th>
+                <th className="px-3 py-2.5">Invité le</th>
               </tr>
             </thead>
             <tbody>
               {audits.map((audit) => (
                 <tr key={audit.id} className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50">
-                  <td className="px-5 py-4 font-medium text-navy-800">
+                  <td className="px-3 py-2.5 font-medium text-navy-800">
                     <Link href={`/admin/audits/${audit.id}`} className="hover:underline">
                       {audit.company_name}
                     </Link>
                   </td>
-                  <td className="px-5 py-4 text-neutral-700">
+                  <td className="px-3 py-2.5 text-neutral-700">
                     {audit.contact_first_name} {audit.contact_last_name}
                     <br />
                     <span className="text-xs text-neutral-500">{audit.contact_email}</span>
                   </td>
-                  <td className="px-5 py-4 text-neutral-700">{audit.country}</td>
-                  <td className="px-5 py-4 text-neutral-700">{AUDIT_STATUS_LABELS_FR[audit.status]}</td>
-                  <td className="px-5 py-4 text-neutral-700">{audit.progress_percent}%</td>
-                  <td className="px-5 py-4 text-neutral-700">
+                  <td className="px-3 py-2.5 text-neutral-700">{audit.country}</td>
+                  <td className="px-3 py-2.5 text-neutral-700">{AUDIT_STATUS_LABELS_FR[audit.status]}</td>
+                  <td className="px-3 py-2.5 text-neutral-700">{audit.progress_percent}%</td>
+                  <td className="px-3 py-2.5 text-neutral-700">
                     {new Date(audit.invited_at).toLocaleDateString("fr-FR")}
-                  </td>
-                  <td className="px-5 py-4 text-right">
-                    <Link
-                      href={`/admin/audits/${audit.id}`}
-                      className="text-xs font-semibold uppercase tracking-widest text-gold-600 hover:underline"
-                    >
-                      Voir →
-                    </Link>
                   </td>
                 </tr>
               ))}

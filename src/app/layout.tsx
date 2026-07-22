@@ -3,8 +3,6 @@ import { Manrope, Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { SITE_URL, SITE_NAME, ORGANIZATION_JSON_LD } from "@/lib/site-config";
-import { Nav } from "@/components/nav";
-import { Footer } from "@/components/footer";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 
 const manrope = Manrope({
@@ -63,11 +61,7 @@ export default function RootLayout({
         >
           Aller au contenu principal
         </a>
-        <Nav />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        {children}
         <Script
           id="ld-json-organization"
           type="application/ld+json"
