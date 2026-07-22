@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { AUDIT_STATUS_LABELS_FR } from "@/lib/audit/status";
@@ -38,12 +39,17 @@ export default async function AdminDashboardPage() {
                 <th className="px-5 py-3">Statut</th>
                 <th className="px-5 py-3">Avancement</th>
                 <th className="px-5 py-3">Invité le</th>
+                <th className="px-5 py-3" />
               </tr>
             </thead>
             <tbody>
               {audits.map((audit) => (
                 <tr key={audit.id} className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50">
-                  <td className="px-5 py-4 font-medium text-navy-800">{audit.company_name}</td>
+                  <td className="px-5 py-4 font-medium text-navy-800">
+                    <Link href={`/admin/audits/${audit.id}`} className="hover:underline">
+                      {audit.company_name}
+                    </Link>
+                  </td>
                   <td className="px-5 py-4 text-neutral-700">
                     {audit.contact_first_name} {audit.contact_last_name}
                     <br />
@@ -54,6 +60,14 @@ export default async function AdminDashboardPage() {
                   <td className="px-5 py-4 text-neutral-700">{audit.progress_percent}%</td>
                   <td className="px-5 py-4 text-neutral-700">
                     {new Date(audit.invited_at).toLocaleDateString("fr-FR")}
+                  </td>
+                  <td className="px-5 py-4 text-right">
+                    <Link
+                      href={`/admin/audits/${audit.id}`}
+                      className="text-xs font-semibold uppercase tracking-widest text-gold-600 hover:underline"
+                    >
+                      Voir →
+                    </Link>
                   </td>
                 </tr>
               ))}
