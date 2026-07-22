@@ -16,6 +16,9 @@ export const CONTACT_EMAIL = "contact@printprofitsystem.fr";
 /** Official contact address for legal/RGPD matters (mentions légales, confidentialité, CGV). */
 export const CONTACT_EMAIL_LEGAL = "contact@shinkeo.com";
 
+/** Admin account inbox — audit-submission notifications land here by default. */
+export const ADMIN_EMAIL = "admin@printprofitsystem.fr";
+
 /** The legal entity operating Print Profit System™ — used on the legal pages. */
 export const COMPANY = {
   name: "Shinkéo SAS",

@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { isAuditEditable, type AuditStatus } from "@/lib/audit/status";
 import { AUDIT_SECTION_SLUGS } from "@/lib/audit/sections";
-import { QuestionnaireShell } from "@/components/audit/questionnaire-shell";
 import { EntrepriseStep } from "@/components/audit/steps/entreprise-step";
 import { DirigeantStep } from "@/components/audit/steps/dirigeant-step";
 import { ActivitesStep } from "@/components/audit/steps/activites-step";
@@ -17,8 +16,19 @@ import { ObjectifsStep } from "@/components/audit/steps/objectifs-step";
 import { AccompagnementStep } from "@/components/audit/steps/accompagnement-step";
 import { MachinesStep } from "@/components/audit/steps/machines-step";
 import { DifficultesStep } from "@/components/audit/steps/difficultes-step";
-import type { MachineData } from "@/lib/audit/schemas/machines";
-import { createEmptyDifficultes, DIFFICULTES_COUNT, type DifficulteData } from "@/lib/audit/schemas/difficultes";
+import { ValidationStep } from "@/components/audit/steps/validation-step";
+import {
+  MACHINE_SELECT_COLUMNS,
+  mapMachineRowToData,
+  type MachineRow,
+} from "@/lib/audit/schemas/machines";
+import {
+  createEmptyDifficultes,
+  DIFFICULTE_SELECT_COLUMNS,
+  DIFFICULTES_COUNT,
+  mapDifficulteRowToData,
+  type DifficulteRow,
+} from "@/lib/audit/schemas/difficultes";
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
@@ -111,66 +121,71 @@ export default async function QuestionnairePage({
     case "machines": {
       const { data: machineRows } = await supabase
         .from("audit_machines")
-        .select(
-          "type, brand, model, year, technology, format, condition, usage_frequency, monthly_volume, main_use, main_difficulty, maintenance_type, is_critical"
-        )
+        .select(MACHINE_SELECT_COLUMNS)
         .eq("audit_id", auditId)
-        .order("position", { ascending: true });
+        .order("position", { ascending: true })
+        .returns<MachineRow[]>();
 
-      const initialMachines: MachineData[] = (machineRows ?? []).map((row) => ({
-        type: row.type ?? "",
-        marque: row.brand ?? "",
-        modele: row.model ?? "",
-        annee: row.year != null ? String(row.year) : "",
-        technologie: row.technology ?? "",
-        format: row.format ?? "",
-        etatGeneral: row.condition ?? "",
-        frequenceUtilisation: row.usage_frequency ?? "",
-        volumeMensuel: row.monthly_volume ?? "",
-        principalUsage: row.main_use ?? "",
-        principaleDifficulte: row.main_difficulty ?? "",
-        maintenance: row.maintenance_type ?? "",
-        critique: Boolean(row.is_critical),
-      }));
-
-      return <MachinesStep auditId={auditId} initialMachines={initialMachines} />;
+      return (
+        <MachinesStep auditId={auditId} initialMachines={(machineRows ?? []).map(mapMachineRowToData)} />
+      );
     }
 
     case "difficultes": {
       const { data: difficulteRows } = await supabase
         .from("audit_difficulties")
-        .select(
-          "rank, description, frequency, age, operational_impact, financial_impact, client_impact, urgency, actions_tried, result"
-        )
+        .select(DIFFICULTE_SELECT_COLUMNS)
         .eq("audit_id", auditId)
-        .order("rank", { ascending: true });
+        .order("rank", { ascending: true })
+        .returns<DifficulteRow[]>();
 
-      const initialDifficultes: DifficulteData[] =
+      const initialDifficultes =
         difficulteRows && difficulteRows.length === DIFFICULTES_COUNT
-          ? difficulteRows.map((row) => ({
-              description: row.description ?? "",
-              frequence: row.frequency ?? "",
-              anciennete: row.age ?? "",
-              impactOperationnel: row.operational_impact ?? "",
-              impactFinancier: row.financial_impact ?? "",
-              impactClient: row.client_impact ?? "",
-              urgence: row.urgency ?? "",
-              actionsTentees: row.actions_tried ?? "",
-              resultat: row.result ?? "",
-            }))
+          ? difficulteRows.map(mapDifficulteRowToData)
           : createEmptyDifficultes();
 
       return <DifficultesStep auditId={auditId} initialDifficultes={initialDifficultes} />;
     }
 
-    default:
-      // "validation" (recap + submit, part of Phase 4) isn't built yet —
-      // keep sequential Prev/Next navigation working rather than bouncing
-      // back to step 1.
+    case "validation": {
+      const [{ data: allAnswers }, { data: machineRows }, { data: difficulteRows }] = await Promise.all([
+        supabase.from("audit_answers").select("section_slug, data").eq("audit_id", auditId),
+        supabase
+          .from("audit_machines")
+          .select(MACHINE_SELECT_COLUMNS)
+          .eq("audit_id", auditId)
+          .order("position", { ascending: true })
+          .returns<MachineRow[]>(),
+        supabase
+          .from("audit_difficulties")
+          .select(DIFFICULTE_SELECT_COLUMNS)
+          .eq("audit_id", auditId)
+          .order("rank", { ascending: true })
+          .returns<DifficulteRow[]>(),
+      ]);
+
+      const answersBySection: Record<string, Record<string, unknown>> = {};
+      for (const row of allAnswers ?? []) {
+        answersBySection[row.section_slug] = row.data as Record<string, unknown>;
+      }
+
+      const machines = (machineRows ?? []).map(mapMachineRowToData);
+      const difficultes =
+        difficulteRows && difficulteRows.length === DIFFICULTES_COUNT
+          ? difficulteRows.map(mapDifficulteRowToData)
+          : [];
+
       return (
-        <QuestionnaireShell auditId={auditId} sectionSlug={stepSlug} status="idle" lastSavedAt={null}>
-          <p className="text-sm text-neutral-600">Cette étape sera disponible prochainement.</p>
-        </QuestionnaireShell>
+        <ValidationStep
+          auditId={auditId}
+          answersBySection={answersBySection}
+          machines={machines}
+          difficultes={difficultes}
+        />
       );
+    }
+
+    default:
+      redirect(`/audit/${auditId}/questionnaire?step=${FIRST_STEP}`);
   }
 }
