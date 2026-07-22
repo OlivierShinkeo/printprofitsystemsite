@@ -32,9 +32,9 @@ export const AUDIT_STATUS_LABELS_FR: Record<AuditStatus, string> = {
 /** Message d'accompagnement affiché sous le statut, dans le tableau de bord prospect. */
 export const AUDIT_STATUS_MESSAGES_FR: Record<AuditStatus, string> = {
   invited:
-    "Cet audit nous permet de mieux comprendre votre entreprise, votre organisation et vos enjeux afin de déterminer si Print Profit System™ est adapté à votre situation.",
+    "Cet audit nous permet de mieux comprendre votre entreprise, votre organisation et vos enjeux afin de déterminer si Print Profit System™ est adapté à votre situation. Prenez le temps nécessaire pour répondre avec précision : plus les informations transmises sont complètes et détaillées, plus l'analyse de votre situation sera fine et les recommandations pertinentes.",
   in_progress:
-    "Cet audit nous permet de mieux comprendre votre entreprise, votre organisation et vos enjeux afin de déterminer si Print Profit System™ est adapté à votre situation. Vous pouvez le compléter à votre rythme — vos réponses sont sauvegardées automatiquement.",
+    "Cet audit nous permet de mieux comprendre votre entreprise, votre organisation et vos enjeux afin de déterminer si Print Profit System™ est adapté à votre situation. Vous pouvez le compléter à votre rythme — vos réponses sont sauvegardées automatiquement. Prenez le temps nécessaire pour répondre avec précision : plus les informations transmises sont complètes et détaillées, plus l'analyse de votre situation sera fine et les recommandations pertinentes.",
   submitted:
     "Votre audit a bien été transmis. Nous l'étudions et revenons vers vous rapidement.",
   under_review: "Votre audit est actuellement à l'étude par notre équipe.",

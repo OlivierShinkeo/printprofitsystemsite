@@ -12,7 +12,16 @@ export async function resolvePostAuthDestination(
   { lookupOwnAudit, fallbackPath }: ResolveDestinationOptions
 ): Promise<string> {
   if (lookupOwnAudit) {
-    const { data } = await supabase.from("audits").select("id").limit(1).maybeSingle();
+    // A prospect should normally have exactly one audit, but if several
+    // exist (e.g. re-invited), resume whichever was worked on most
+    // recently rather than an arbitrary row.
+    const { data } = await supabase
+      .from("audits")
+      .select("id")
+      .order("last_saved_at", { ascending: false, nullsFirst: false })
+      .order("invited_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
     if (data) return `/audit/${data.id}`;
   }
   return fallbackPath;
