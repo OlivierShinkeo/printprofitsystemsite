@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { AUDIT_SECTION_SLUGS } from "@/lib/audit/sections";
 import { computeProgressPercent } from "@/lib/audit/progress";
+import type { MachineData } from "@/lib/audit/schemas/machines";
 import type { AuditStatus } from "@/lib/audit/status";
 
 export const runtime = "nodejs";
@@ -17,37 +17,52 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ au
     return NextResponse.json({ error: "Non authentifié." }, { status: 401 });
   }
 
-  let body: { section?: string; data?: unknown };
+  let body: { machines?: MachineData[] };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "Requête invalide." }, { status: 400 });
   }
 
-  if (
-    !body.section ||
-    !AUDIT_SECTION_SLUGS.has(body.section) ||
-    typeof body.data !== "object" ||
-    body.data === null
-  ) {
-    return NextResponse.json({ error: "Section invalide." }, { status: 400 });
+  if (!Array.isArray(body.machines)) {
+    return NextResponse.json({ error: "Liste de machines invalide." }, { status: 400 });
   }
 
-  // RLS (`audit_answers_insert_own_draft` / `_update_own_draft`) rejects this
-  // write outright if the audit isn't this user's own, or is no longer
-  // editable (submitted/locked) — no extra ownership check needed here.
-  const { error: upsertError } = await supabase
-    .from("audit_answers")
-    .upsert(
-      { audit_id: auditId, section_slug: body.section, data: body.data },
-      { onConflict: "audit_id,section_slug" }
-    );
-
-  if (upsertError) {
+  // Simplest correct strategy for a modest-sized list: replace everything
+  // this audit has, in the order the client sent it. RLS (`audit_machines
+  // _delete_own_draft` / `_write_own_draft`) rejects both steps outright if
+  // the audit isn't this user's own or is no longer editable.
+  const { error: deleteError } = await supabase.from("audit_machines").delete().eq("audit_id", auditId);
+  if (deleteError) {
     return NextResponse.json(
       { error: "Impossible d'enregistrer. Cet audit n'est peut-être plus modifiable." },
       { status: 403 }
     );
+  }
+
+  if (body.machines.length > 0) {
+    const rows = body.machines.map((machine, index) => ({
+      audit_id: auditId,
+      position: index,
+      type: machine.type,
+      brand: machine.marque,
+      model: machine.modele,
+      year: machine.annee ? Number(machine.annee) : null,
+      technology: machine.technologie,
+      format: machine.format,
+      condition: machine.etatGeneral,
+      usage_frequency: machine.frequenceUtilisation,
+      monthly_volume: machine.volumeMensuel,
+      main_use: machine.principalUsage,
+      main_difficulty: machine.principaleDifficulte,
+      maintenance_type: machine.maintenance,
+      is_critical: Boolean(machine.critique),
+    }));
+
+    const { error: insertError } = await supabase.from("audit_machines").insert(rows);
+    if (insertError) {
+      return NextResponse.json({ error: "Impossible d'enregistrer." }, { status: 403 });
+    }
   }
 
   const progressPercent = await computeProgressPercent(supabase, auditId);

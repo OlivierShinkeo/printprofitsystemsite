@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { AUDIT_SECTION_SLUGS } from "@/lib/audit/sections";
 import { computeProgressPercent } from "@/lib/audit/progress";
+import { DIFFICULTES_COUNT, type DifficulteData } from "@/lib/audit/schemas/difficultes";
 import type { AuditStatus } from "@/lib/audit/status";
 
 export const runtime = "nodejs";
@@ -17,37 +17,47 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ au
     return NextResponse.json({ error: "Non authentifié." }, { status: 401 });
   }
 
-  let body: { section?: string; data?: unknown };
+  let body: { difficulties?: DifficulteData[] };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "Requête invalide." }, { status: 400 });
   }
 
-  if (
-    !body.section ||
-    !AUDIT_SECTION_SLUGS.has(body.section) ||
-    typeof body.data !== "object" ||
-    body.data === null
-  ) {
-    return NextResponse.json({ error: "Section invalide." }, { status: 400 });
+  if (!Array.isArray(body.difficulties) || body.difficulties.length !== DIFFICULTES_COUNT) {
+    return NextResponse.json({ error: "Liste de difficultés invalide." }, { status: 400 });
   }
 
-  // RLS (`audit_answers_insert_own_draft` / `_update_own_draft`) rejects this
-  // write outright if the audit isn't this user's own, or is no longer
-  // editable (submitted/locked) — no extra ownership check needed here.
-  const { error: upsertError } = await supabase
-    .from("audit_answers")
-    .upsert(
-      { audit_id: auditId, section_slug: body.section, data: body.data },
-      { onConflict: "audit_id,section_slug" }
-    );
-
-  if (upsertError) {
+  // Same replace-all strategy as /machines — RLS rejects both steps
+  // outright if the audit isn't this user's own or is no longer editable.
+  const { error: deleteError } = await supabase
+    .from("audit_difficulties")
+    .delete()
+    .eq("audit_id", auditId);
+  if (deleteError) {
     return NextResponse.json(
       { error: "Impossible d'enregistrer. Cet audit n'est peut-être plus modifiable." },
       { status: 403 }
     );
+  }
+
+  const rows = body.difficulties.map((difficulte, index) => ({
+    audit_id: auditId,
+    rank: index + 1,
+    description: difficulte.description,
+    frequency: difficulte.frequence,
+    age: difficulte.anciennete,
+    operational_impact: difficulte.impactOperationnel,
+    financial_impact: difficulte.impactFinancier,
+    client_impact: difficulte.impactClient,
+    urgency: difficulte.urgence,
+    actions_tried: difficulte.actionsTentees,
+    result: difficulte.resultat,
+  }));
+
+  const { error: insertError } = await supabase.from("audit_difficulties").insert(rows);
+  if (insertError) {
+    return NextResponse.json({ error: "Impossible d'enregistrer." }, { status: 403 });
   }
 
   const progressPercent = await computeProgressPercent(supabase, auditId);

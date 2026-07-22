@@ -31,7 +31,7 @@ export function QuestionnaireShell({
       <div className="mx-auto max-w-3xl">
         <div className="mb-8">
           <p className="mb-1 text-[11px] font-semibold uppercase tracking-widest text-gold-600">
-            Étape {index + 1} sur {AUDIT_SECTIONS.length}
+            Étape {index + 1} sur {AUDIT_SECTIONS.length} — {progressPercent}%
           </p>
           <h1 className="mb-4 font-display text-2xl font-bold text-navy-800">{section.title}</h1>
           <ProgressBar percent={progressPercent} />

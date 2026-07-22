@@ -15,6 +15,10 @@ import { PilotageStep } from "@/components/audit/steps/pilotage-step";
 import { EquipeStep } from "@/components/audit/steps/equipe-step";
 import { ObjectifsStep } from "@/components/audit/steps/objectifs-step";
 import { AccompagnementStep } from "@/components/audit/steps/accompagnement-step";
+import { MachinesStep } from "@/components/audit/steps/machines-step";
+import { DifficultesStep } from "@/components/audit/steps/difficultes-step";
+import type { MachineData } from "@/lib/audit/schemas/machines";
+import { createEmptyDifficultes, DIFFICULTES_COUNT, type DifficulteData } from "@/lib/audit/schemas/difficultes";
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
@@ -104,10 +108,65 @@ export default async function QuestionnairePage({
     case "accompagnement":
       return <AccompagnementStep auditId={auditId} initialData={initialData} />;
 
+    case "machines": {
+      const { data: machineRows } = await supabase
+        .from("audit_machines")
+        .select(
+          "type, brand, model, year, technology, format, condition, usage_frequency, monthly_volume, main_use, main_difficulty, maintenance_type, is_critical"
+        )
+        .eq("audit_id", auditId)
+        .order("position", { ascending: true });
+
+      const initialMachines: MachineData[] = (machineRows ?? []).map((row) => ({
+        type: row.type ?? "",
+        marque: row.brand ?? "",
+        modele: row.model ?? "",
+        annee: row.year != null ? String(row.year) : "",
+        technologie: row.technology ?? "",
+        format: row.format ?? "",
+        etatGeneral: row.condition ?? "",
+        frequenceUtilisation: row.usage_frequency ?? "",
+        volumeMensuel: row.monthly_volume ?? "",
+        principalUsage: row.main_use ?? "",
+        principaleDifficulte: row.main_difficulty ?? "",
+        maintenance: row.maintenance_type ?? "",
+        critique: Boolean(row.is_critical),
+      }));
+
+      return <MachinesStep auditId={auditId} initialMachines={initialMachines} />;
+    }
+
+    case "difficultes": {
+      const { data: difficulteRows } = await supabase
+        .from("audit_difficulties")
+        .select(
+          "rank, description, frequency, age, operational_impact, financial_impact, client_impact, urgency, actions_tried, result"
+        )
+        .eq("audit_id", auditId)
+        .order("rank", { ascending: true });
+
+      const initialDifficultes: DifficulteData[] =
+        difficulteRows && difficulteRows.length === DIFFICULTES_COUNT
+          ? difficulteRows.map((row) => ({
+              description: row.description ?? "",
+              frequence: row.frequency ?? "",
+              anciennete: row.age ?? "",
+              impactOperationnel: row.operational_impact ?? "",
+              impactFinancier: row.financial_impact ?? "",
+              impactClient: row.client_impact ?? "",
+              urgence: row.urgency ?? "",
+              actionsTentees: row.actions_tried ?? "",
+              resultat: row.result ?? "",
+            }))
+          : createEmptyDifficultes();
+
+      return <DifficultesStep auditId={auditId} initialDifficultes={initialDifficultes} />;
+    }
+
     default:
-      // "machines", "difficultes" (dynamic tables) and "validation" (final
-      // recap + submit, part of Phase 4) aren't built yet — keep sequential
-      // Prev/Next navigation working rather than bouncing back to step 1.
+      // "validation" (recap + submit, part of Phase 4) isn't built yet —
+      // keep sequential Prev/Next navigation working rather than bouncing
+      // back to step 1.
       return (
         <QuestionnaireShell auditId={auditId} sectionSlug={stepSlug} status="idle" lastSavedAt={null}>
           <p className="text-sm text-neutral-600">Cette étape sera disponible prochainement.</p>
