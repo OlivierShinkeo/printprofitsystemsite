@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AuditRecap } from "@/components/audit/audit-recap";
 import { Button } from "@/components/ui/button";
+import { PrintButton } from "@/components/ui/print-button";
 import { AUDIT_STATUSES, AUDIT_STATUS_LABELS_FR, type AuditStatus } from "@/lib/audit/status";
 import { RECOMMENDATION_OPTIONS, type RecommendationData } from "@/lib/admin/recommendation";
 import type { MachineData } from "@/lib/audit/schemas/machines";
@@ -151,9 +152,12 @@ export function AuditDetail({
   return (
     <div className="flex flex-col gap-10">
       <div className="rounded-md border border-neutral-200 bg-white px-8 py-8">
-        <p className="mb-1 text-[11px] font-semibold uppercase tracking-widest text-gold-600">
-          {AUDIT_STATUS_LABELS_FR[status]}
-        </p>
+        <div className="mb-1 flex flex-wrap items-start justify-between gap-4">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-gold-600">
+            {AUDIT_STATUS_LABELS_FR[status]}
+          </p>
+          <PrintButton label="Exporter en PDF" size="sm" />
+        </div>
         <h1 className="mb-1 font-display text-2xl font-bold text-navy-800">{companyName}</h1>
         <p className="mb-6 text-sm text-neutral-500">
           {contactFirstName} {contactLastName} — {contactEmail} — {country}
@@ -175,7 +179,7 @@ export function AuditDetail({
         </div>
       </div>
 
-      <div className="rounded-md border border-neutral-200 bg-white px-8 py-8">
+      <div className="no-print rounded-md border border-neutral-200 bg-white px-8 py-8">
         <h2 className="mb-5 font-display text-lg font-bold text-navy-800">Changer le statut</h2>
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -239,7 +243,7 @@ export function AuditDetail({
         )}
       </div>
 
-      <div className="rounded-md border border-neutral-200 bg-white px-8 py-8">
+      <div className="no-print rounded-md border border-neutral-200 bg-white px-8 py-8">
         <h2 className="mb-5 font-display text-lg font-bold text-navy-800">Analyse interne</h2>
         <p className="mb-6 text-xs text-neutral-500">
           Ces informations ne sont jamais visibles par le prospect.
@@ -334,7 +338,7 @@ export function AuditDetail({
         </div>
       </div>
 
-      <div className="rounded-md border border-neutral-200 bg-white px-8 py-8">
+      <div className="no-print rounded-md border border-neutral-200 bg-white px-8 py-8">
         <h2 className="mb-5 font-display text-lg font-bold text-navy-800">Notes internes</h2>
         <div className="mb-5 flex flex-col gap-3 sm:flex-row">
           <input
