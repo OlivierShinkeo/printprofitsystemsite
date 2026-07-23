@@ -75,7 +75,7 @@ const sections: LegalSection[] = [
     heading: "6. Modalités de paiement",
     content: (
       <>
-        <p>Le paiement est réalisé via [Systeme.io / Stripe].</p>
+        <p>Le paiement est réalisé via Stripe.</p>
         <p>Pour les abonnements :</p>
         <LegalList items={["la facturation est mensuelle", "l'abonnement est reconduit automatiquement"]} />
       </>

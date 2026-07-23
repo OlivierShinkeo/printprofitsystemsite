@@ -10,8 +10,10 @@ Design (`../Site vitrine.dc.html` et `../chats/chat1.md`) en Next.js 15 / TypeSc
 - **Tailwind CSS v4** — thème configuré dans `src/app/globals.css` (`@theme`) à partir des tokens
   du design system (`../project/_ds/.../tokens/*.css`) : couleurs navy/or/crème, polices
   Manrope + Inter, tailles de texte, tracking, line-height, radius, ombres, breakpoints 580/960px.
-- **Nodemailer** pour l'envoi d'email du formulaire de contact (SMTP)
+- **Nodemailer** pour l'envoi d'email (formulaire de contact + emails de l'audit de faisabilité)
 - Webhook sortant (Make / n8n) pour le formulaire de contact
+- **Supabase** (Postgres + Auth + RLS) pour l'audit de faisabilité et le portail admin
+- **Vercel Cron** pour les relances automatiques des audits incomplets
 
 ## Structure du projet
 
@@ -19,31 +21,52 @@ Design (`../Site vitrine.dc.html` et `../chats/chat1.md`) en Next.js 15 / TypeSc
 site/
 ├─ src/
 │  ├─ app/
-│  │  ├─ layout.tsx           # Layout racine : fonts, metadata, Nav + Footer, JSON-LD
-│  │  ├─ page.tsx             # Page d'accueil — assemble les 11 sections
-│  │  ├─ globals.css          # Tokens du design system → thème Tailwind
+│  │  ├─ layout.tsx           # Layout racine : fonts, metadata, JSON-LD (pas de <main>/Nav/Footer)
+│  │  ├─ (marketing)/         # Groupe de routes du site public — seul endroit avec Nav + Footer
+│  │  │  ├─ layout.tsx        #   Nav + <main> + Footer
+│  │  │  ├─ page.tsx          #   Page d'accueil — assemble les 11 sections
+│  │  │  ├─ mentions-legales/
+│  │  │  ├─ confidentialite/
+│  │  │  └─ conditions-generales-de-vente/
+│  │  ├─ globals.css          # Tokens du design system → thème Tailwind + règles @media print
 │  │  ├─ sitemap.ts           # /sitemap.xml
-│  │  ├─ robots.ts            # /robots.txt
+│  │  ├─ robots.ts            # /robots.txt (bloque /admin, /audit, /api à l'indexation)
 │  │  ├─ icon.png             # Favicon (monogramme de marque)
-│  │  ├─ not-found.tsx        # Page 404
-│  │  ├─ mentions-legales/    # Page légale (placeholders [À COMPLÉTER])
-│  │  ├─ confidentialite/     # Politique de confidentialité (placeholders)
-│  │  └─ api/contact/route.ts # Endpoint POST : email (SMTP) + webhook
+│  │  ├─ not-found.tsx        # Page 404 (rend son propre Nav/Footer, hors du groupe marketing)
+│  │  ├─ admin/                        # Portail admin — bare <main>, pas de Nav/Footer marketing
+│  │  │  ├─ layout.tsx
+│  │  │  ├─ login/, auth/callback/     # Accès public (hors garde de rôle)
+│  │  │  └─ (protected)/               # Garde : session + profiles.role === "admin"
+│  │  │     ├─ page.tsx                #   Liste des audits + filtres
+│  │  │     └─ audits/new/, audits/[auditId]/
+│  │  ├─ audit/                        # Espace prospect — même principe de layout
+│  │  │  ├─ login/, auth/callback/
+│  │  │  └─ (protected)/[auditId]/     # Garde : session + prospect_profile_id = auth.uid()
+│  │  │     ├─ page.tsx                #   Tableau de bord
+│  │  │     ├─ questionnaire/          #   14 étapes, autosave, ?step=
+│  │  │     └─ recap/                  #   Récap post-soumission (lecture seule)
+│  │  └─ api/
+│  │     ├─ contact/route.ts                          # Email (SMTP) + webhook
+│  │     ├─ admin/invite/route.ts                     # Création prospect + audit + email d'invitation
+│  │     ├─ admin/audits/[auditId]/{status,notes,recommendation}/route.ts
+│  │     ├─ audit/[auditId]/{answers,machines,difficulties,submit}/route.ts
+│  │     └─ cron/audit-reminders/route.ts             # Vercel Cron — relances (voir vercel.json)
 │  ├─ components/
-│  │  ├─ nav.tsx              # Nav fixe, transparente→opaque au scroll, menu mobile
-│  │  ├─ footer.tsx
-│  │  ├─ faq-accordion.tsx    # Accordéon FAQ (client)
-│  │  ├─ contact-form.tsx     # Formulaire de contact (validation + états)
-│  │  ├─ ui/
-│  │  │  ├─ button.tsx        # 5 variantes × 3 tailles (mirroring le DS Button.jsx)
-│  │  │  ├─ section-label.tsx # Eyebrow label (ligne dorée + texte uppercase)
-│  │  │  └─ fade-in.tsx       # Animation fade-up au scroll (IntersectionObserver)
-│  │  └─ sections/            # Une section = un fichier (Hero, Reconnais, Philosophie…)
+│  │  ├─ nav.tsx / footer.tsx          # Chrome du site public uniquement
+│  │  ├─ faq-accordion.tsx
+│  │  ├─ contact-form.tsx
+│  │  ├─ auth/                         # MagicLinkForm (lien + code OTP de secours), callback handler
+│  │  ├─ audit/                        # Steps du questionnaire, ProgressBar, AuditRecap, autosave hooks
+│  │  ├─ admin/                        # AuditDetail, InviteForm, AdminAuditFilters
+│  │  └─ ui/
+│  │     ├─ button.tsx / print-button.tsx / section-label.tsx / fade-in.tsx
+│  │  └─ sections/                     # Une section = un fichier (Hero, Reconnais, Philosophie…)
 │  └─ lib/
-│     ├─ content.ts           # Tous les textes (copié du .dc.html validé, ne pas reformuler)
-│     ├─ site-config.ts       # SITE_URL, CALENDLY_URL, JSON-LD Organization
-│     ├─ contact-schema.ts    # Validation partagée client/serveur du formulaire
-│     └─ cn.ts                # Petit helper de concaténation de classes
+│     ├─ content.ts / site-config.ts / contact-schema.ts / cn.ts
+│     ├─ supabase/                     # client (browser), server, admin (service-role, server-only)
+│     └─ audit/                        # sections registry, schémas, status, humanize, progress
+├─ supabase/migrations/                # 0001 schéma+RLS, 0002 policy soumission, 0003 relances
+├─ vercel.json                         # Déclaration du cron /api/cron/audit-reminders
 └─ public/images/             # Logos + portraits copiés depuis le bundle de design
 ```
 
@@ -67,6 +90,10 @@ Voir `.env.example` pour la liste complète. Résumé :
 | `CONTACT_EMAIL_TO` | Adresse qui reçoit les demandes de contact | Optionnel (défaut : `contact@printprofitsystem.fr`) |
 | `CONTACT_EMAIL_FROM` | Adresse d'expédition des emails | Optionnel (défaut : `SMTP_USER`) |
 | `WEBHOOK_URL` | URL de webhook Make/n8n qui reçoit chaque soumission en JSON | Optionnel — si absent, aucun appel n'est fait |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Connexion Supabase côté client/serveur (audit de faisabilité) | Requis pour `/audit` et `/admin` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Clé secrète, contourne la RLS — utilisée uniquement dans les routes serveur (invitations, relances). Ne jamais exposer côté client. | Requis pour `/audit` et `/admin` |
+| `ADMIN_NOTIFICATION_EMAIL_TO` | Adresse recevant la notification "nouvel audit soumis" | Optionnel (défaut : `ADMIN_EMAIL` dans `site-config.ts`) |
+| `CRON_SECRET` | Secret partagé vérifiant que `/api/cron/audit-reminders` est bien appelé par Vercel Cron | Requis pour les relances automatiques |
 
 Le formulaire de contact fonctionne dès maintenant (validation, état de succès/erreur) même sans
 SMTP/webhook configurés : dans ce cas, la soumission est acceptée mais rien n'est expédié — utile
@@ -87,6 +114,45 @@ pour développer/démontrer avant d'avoir les identifiants définitifs.
   l'environnement, la soumission est acceptée sans blocage (cf. ci-dessus).
 - Les valeurs saisies sont nettoyées (retours à la ligne supprimés) avant d'être injectées dans les
   en-têtes de l'email (sujet, etc.) pour empêcher toute injection d'en-tête.
+
+## Audit de faisabilité (`/audit`, `/admin`)
+
+Questionnaire de faisabilité en 14 étapes pour les prospects, avec autosave, reprise multi-session,
+et un portail admin de suivi.
+
+- **Auth** : lien magique (Supabase Auth) + code OTP de secours saisi manuellement (certaines
+  messageries invalident le lien en le pré-chargeant). `src/components/auth/magic-link-form.tsx`.
+- **Modèle de données** : une ligne `audits` par prospect invité, réponses en JSONB par section
+  (`audit_answers`), tables dédiées pour le parc machines et les difficultés (listes dynamiques).
+  Schéma complet + RLS : `supabase/migrations/0001_init_audit_schema.sql`.
+- **Sécurité** : chaque route API revérifie l'authentification/le rôle indépendamment des policies
+  RLS (défense en profondeur) ; RLS empêche un prospect de lire/modifier l'audit d'un autre, même en
+  devinant un `auditId`. Le client service-role (`src/lib/supabase/admin.ts`, `import "server-only"`)
+  n'est utilisé que dans des routes serveur pour des actions précises (créer une invitation, logger
+  un changement de statut) — jamais exposé au client.
+- **Relances automatiques** : Vercel Cron appelle `/api/cron/audit-reminders` tous les jours (voir
+  `vercel.json`) ; relance un audit invité/en cours resté inactif 3 jours, plafonné à 3 relances.
+- **Export PDF** : bouton "Imprimer / Enregistrer en PDF" (`src/components/ui/print-button.tsx`) —
+  ouvre la boîte de dialogue d'impression du navigateur avec une mise en page épurée (règles
+  `@media print` dans `globals.css`), sans dépendance PDF supplémentaire.
+
+**Mise en place initiale (une fois) :**
+
+1. Créer un projet sur [supabase.com](https://supabase.com).
+2. Exécuter dans l'éditeur SQL Supabase, **dans l'ordre** : `0001_init_audit_schema.sql`,
+   `0002_audit_submit_policy.sql`, `0003_audit_reminders.sql`.
+3. Renseigner `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
+   `SUPABASE_SERVICE_ROLE_KEY` (Project Settings → API).
+4. Configurer le SMTP personnalisé de Supabase (Authentication → Settings) pour que les emails de
+   connexion partent depuis le domaine du site plutôt que l'expéditeur par défaut de Supabase.
+5. Personnaliser le template d'email "Magic Link" (Authentication → Email Templates) — Supabase
+   envoie ce template en anglais par défaut ; garder les variables `{{ .ConfirmationURL }}` et
+   `{{ .Token }}` (ce dernier alimente le champ de code de secours).
+6. Générer une valeur aléatoire pour `CRON_SECRET` (ex. `openssl rand -hex 32`) et la renseigner
+   à la fois dans Vercel et nulle part ailleurs — c'est Vercel qui l'envoie automatiquement en
+   en-tête `Authorization` à chaque appel du cron.
+7. Créer le premier compte admin : inviter un audit normalement puis, dans Supabase (Table Editor →
+   `profiles`), passer son `role` à `admin`.
 
 ## Sécurité
 
@@ -138,8 +204,11 @@ exactement aux règles du prototype : `sm` = 580px, `lg` = 960px.
 
 1. Importer le repo sur [vercel.com/new](https://vercel.com/new).
 2. Renseigner les variables d'environnement du tableau ci-dessus dans les réglages du projet
-   Vercel (Production + Preview).
-3. Le build (`next build`) et le déploiement sont automatiques à chaque push.
+   Vercel (Production + Preview) — voir aussi la mise en place initiale Supabase ci-dessus si
+   `/audit`/`/admin` ne sont pas encore configurés.
+3. Le build (`next build`) et le déploiement sont automatiques à chaque push. `vercel.json` déclare
+   le cron des relances — Vercel le crée automatiquement au déploiement, rien à faire côté dashboard
+   à part renseigner `CRON_SECRET`.
 
 ## Commandes
 
@@ -150,9 +219,3 @@ npm run start   # sert le build de production
 npm run lint    # ESLint
 ```
 
-## Pages à compléter avant mise en production
-
-- `src/app/mentions-legales/page.tsx` et `src/app/confidentialite/page.tsx` contiennent des
-  champs `[À COMPLÉTER]` (SIRET, adresse, hébergeur, durée de conservation des données…) à
-  remplacer par les informations réelles de l'entreprise.
-- `NEXT_PUBLIC_CALENDLY_URL` : remplacer le lien Calendly placeholder par le vrai lien.
