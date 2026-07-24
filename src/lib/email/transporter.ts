@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { SITE_NAME } from "@/lib/site-config";
 
 let cachedTransporter: ReturnType<typeof nodemailer.createTransport> | null = null;
 
@@ -31,6 +32,7 @@ export function sanitizeHeaderValue(value: string) {
   return value.replace(/[\r\n]+/g, " ").trim();
 }
 
+/** Sets the display name shown by the recipient's email client (e.g. "Print Profit System™ <admin@…>") instead of the raw address' local part. */
 export function defaultFromAddress() {
-  return process.env.CONTACT_EMAIL_FROM || process.env.SMTP_USER!;
+  return { name: SITE_NAME, address: process.env.CONTACT_EMAIL_FROM || process.env.SMTP_USER! };
 }
