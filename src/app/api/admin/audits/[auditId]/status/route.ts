@@ -1,11 +1,22 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { AUDIT_STATUSES, isAuditEditable, type AuditStatus } from "@/lib/audit/status";
+import { sendAuditStatusNotificationEmail } from "@/lib/email/audit-status-notification";
 import type { Profile } from "@/lib/audit/types";
 
 export const runtime = "nodejs";
 
 const AUDIT_STATUS_SET = new Set<string>(AUDIT_STATUSES);
+
+// Statuts pour lesquels le prospect reçoit un email l'informant qu'un membre
+// de l'équipe va le recontacter — jamais pour les statuts de travail interne
+// (invited/in_progress/submitted/under_review/archived).
+const NOTIFY_PROSPECT_STATUSES = new Set<AuditStatus>([
+  "additional_information_requested",
+  "approved",
+  "approved_with_conditions",
+  "rejected",
+]);
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ auditId: string }> }) {
   const { auditId } = await params;
@@ -42,9 +53,9 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ au
 
   const { data: audit } = await supabase
     .from("audits")
-    .select("status")
+    .select("status, company_name, contact_first_name, contact_email")
     .eq("id", auditId)
-    .single<{ status: AuditStatus }>();
+    .single<{ status: AuditStatus; company_name: string; contact_first_name: string; contact_email: string }>();
 
   if (!audit) {
     return NextResponse.json({ error: "Audit introuvable." }, { status: 404 });
@@ -66,6 +77,21 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ au
     changed_by: callerProfile.id,
     note: body.note?.trim() || null,
   });
+
+  if (NOTIFY_PROSPECT_STATUSES.has(newStatus)) {
+    try {
+      await sendAuditStatusNotificationEmail({
+        to: audit.contact_email,
+        firstName: audit.contact_first_name,
+        companyName: audit.company_name,
+        status: newStatus,
+      });
+    } catch (emailError) {
+      // Le statut est déjà mis à jour et loggé en base — un échec d'envoi ne
+      // doit jamais faire passer l'action de l'admin pour un échec.
+      console.error("Status update: sendAuditStatusNotificationEmail failed", emailError);
+    }
+  }
 
   return NextResponse.json({ ok: true });
 }
