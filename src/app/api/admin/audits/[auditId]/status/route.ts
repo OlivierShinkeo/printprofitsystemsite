@@ -10,8 +10,9 @@ const AUDIT_STATUS_SET = new Set<string>(AUDIT_STATUSES);
 
 // Statuts pour lesquels le prospect reçoit un email l'informant qu'un membre
 // de l'équipe va le recontacter — jamais pour les statuts de travail interne
-// (invited/in_progress/submitted/under_review/archived).
+// où rien n'est encore décidé (invited/in_progress/submitted/archived).
 const NOTIFY_PROSPECT_STATUSES = new Set<AuditStatus>([
+  "under_review",
   "additional_information_requested",
   "approved",
   "approved_with_conditions",
