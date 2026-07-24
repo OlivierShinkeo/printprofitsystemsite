@@ -33,6 +33,8 @@ export async function sendAuditInvitationEmail({
       "",
       `Comptez environ 30 à 45 minutes. Vous pouvez répondre en plusieurs fois : vos réponses sont sauvegardées automatiquement et vous pouvez reprendre à tout moment.`,
       "",
+      `Pour votre sécurité, l'accès ne nécessite aucun mot de passe. Si vous quittez la page et souhaitez y revenir plus tard, rendez-vous simplement sur ${LOGIN_FALLBACK_URL} avec votre adresse email : vous recevrez un nouveau lien de connexion (et un code de secours) à chaque fois. C'est normal — vos réponses, elles, restent bien sauvegardées entre chaque visite.`,
+      "",
       `Accéder à votre audit : ${magicLink}`,
       "",
       "Ce lien est personnel, à usage strictement individuel.",
@@ -44,6 +46,7 @@ export async function sendAuditInvitationEmail({
       <p>Vous êtes invité(e) à compléter l'audit de faisabilité <strong>${SITE_NAME}</strong> pour <strong>${escapeHtml(companyName)}</strong>.</p>
       <p>Cet audit nous permet de mieux comprendre votre entreprise, votre organisation et vos enjeux afin de déterminer si Print Profit System™ est adapté à votre situation.</p>
       <p>Comptez environ 30 à 45 minutes. Vous pouvez répondre en plusieurs fois&nbsp;: vos réponses sont sauvegardées automatiquement et vous pouvez reprendre à tout moment, depuis n'importe quel appareil.</p>
+      <p style="font-size:13px;color:#565249;">Pour votre sécurité, l'accès ne nécessite aucun mot de passe. Si vous quittez la page et souhaitez y revenir plus tard, rendez-vous simplement sur <a href="${LOGIN_FALLBACK_URL}">${LOGIN_FALLBACK_URL}</a> avec votre adresse email&nbsp;: vous recevrez un nouveau lien de connexion (et un code de secours) à chaque fois. C'est normal — vos réponses, elles, restent bien sauvegardées entre chaque visite.</p>
       <p><a href="${magicLink}" style="display:inline-block;padding:12px 24px;background:#162040;color:#ffffff;text-decoration:none;border-radius:4px;">Accéder à votre audit</a></p>
       <p style="font-size:13px;color:#565249;">Ce lien est personnel, à usage strictement individuel. Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur&nbsp;:<br>${escapeHtml(magicLink)}</p>
       <p style="font-size:13px;color:#565249;">Le lien ne fonctionne toujours pas&nbsp;? Certaines messageries l'invalident en le pré-chargeant automatiquement. Rendez-vous sur <a href="${LOGIN_FALLBACK_URL}">${LOGIN_FALLBACK_URL}</a> et connectez-vous avec l'adresse ${escapeHtml(to)} pour recevoir un nouveau lien et un code de secours à saisir manuellement.</p>
