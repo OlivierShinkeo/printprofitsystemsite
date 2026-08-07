@@ -5,7 +5,7 @@ export const SITE_URL =
 
 export const CALENDLY_URL =
   process.env.NEXT_PUBLIC_CALENDLY_URL ??
-  "https://calendly.com/printprofitsystem/appel-de-decouverte-print-profit-system";
+  "https://calendly.com/printprofitsystem/appel-de-candidature-print-profit-system";
 
 /** Google Analytics 4 Measurement ID — script only loads in production (see layout.tsx). */
 export const GA_MEASUREMENT_ID = "G-LVGFL2W8LE";
