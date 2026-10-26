@@ -4,7 +4,9 @@ import { CONTACT_EMAIL_LEGAL, COMPANY } from "@/lib/site-config";
 export function CompanyBlock() {
   return (
     <p>
-      {COMPANY.name}
+      {COMPANY.name}, au capital de {COMPANY.capital}
+      <br />
+      RCS {COMPANY.rcs}
       <br />
       Siège social : {COMPANY.address}
       <br />

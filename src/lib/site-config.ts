@@ -22,6 +22,9 @@ export const ADMIN_EMAIL = "admin@printprofitsystem.fr";
 /** The legal entity operating Print Profit System™ — used on the legal pages. */
 export const COMPANY = {
   name: "Shinkéo SAS",
+  capital: "500 €",
+  rcs: "Niort 102 935 392",
+  director: "Olivier Puyravaud",
   address: "13 impasse Nicolas Poussin - 79000 Niort",
   siret: "10293539200013",
 } as const;
