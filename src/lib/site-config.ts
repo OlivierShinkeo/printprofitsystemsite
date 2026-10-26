@@ -30,9 +30,9 @@ export const COMPANY = {
 } as const;
 
 export const HOST = {
-  name: "Systeme.io",
-  legalName: "ITACWT Limited",
-  address: "6 Fern Road, Sandyford Business Park, Dublin 18, Irlande",
+  name: "Infomaniak",
+  legalName: "Infomaniak Network SA",
+  address: "Rue Eugène-Marziano 25, 1227 Les Acacias (GE), Suisse",
 } as const;
 
 export const ORGANIZATION_JSON_LD = {

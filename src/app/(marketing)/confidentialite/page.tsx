@@ -86,7 +86,8 @@ const sections: LegalSection[] = [
         <p>Les données peuvent être traitées par les services suivants :</p>
         <LegalList
           items={[
-            "Systeme.io (hébergement, tunnel de vente)",
+            "Infomaniak (hébergement du site)",
+            "Systeme.io (hébergement du tunnel de vente)",
             "Stripe (paiement sécurisé)",
             "Make (automatisation)",
             "Zite / Fillout (application et base de données)",
@@ -161,5 +162,5 @@ const sections: LegalSection[] = [
 ];
 
 export default function ConfidentialitePage() {
-  return <LegalPage title="Politique de confidentialité" updated="2 juillet 2026" sections={sections} />;
+  return <LegalPage title="Politique de confidentialité" updated="26 octobre 2026" sections={sections} />;
 }
