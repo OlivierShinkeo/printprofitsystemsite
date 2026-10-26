@@ -40,7 +40,8 @@ export function Garantie() {
               Si, dans les <strong className="font-semibold text-navy-800">90 premiers jours</strong>,
               nous n&apos;identifions pas ensemble des leviers permettant de viser au minimum{" "}
               <strong className="font-semibold text-navy-800">cinq points de marge récupérables</strong>,
-              nous prolongeons l&apos;accompagnement gratuitement jusqu&apos;à atteindre cet objectif.
+              nous prolongeons l&apos;accompagnement gratuitement jusqu&apos;à atteindre cet objectif,
+              dans la limite de <strong className="font-semibold text-navy-800">3 mois supplémentaires</strong>.
             </p>
             <p className="text-sm italic leading-relaxed text-neutral-500">
               Cette garantie traduit notre confiance dans notre méthode et notre volonté

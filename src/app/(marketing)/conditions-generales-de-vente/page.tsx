@@ -126,13 +126,14 @@ const sections: LegalSection[] = [
     content: (
       <>
         <p>
-          Shinkéo s&apos;engage à identifier, avec le client, des leviers significatifs de gains ou de
-          réduction des pertes dans son activité d&apos;impression.
+          Shinkéo s&apos;engage à identifier avec le client, dans les 90 premiers jours de
+          l&apos;accompagnement, des leviers permettant de viser au minimum cinq points de marge
+          récupérables dans son activité d&apos;impression.
         </p>
         <p>
-          Si, au terme de l&apos;accompagnement, aucun levier significatif n&apos;a été identifié,
-          l&apos;accompagnement est prolongé sans frais jusqu&apos;à leur identification, dans la
-          limite de 3 mois supplémentaires.
+          Si cet objectif n&apos;est pas atteint dans ce délai, l&apos;accompagnement est prolongé
+          sans frais jusqu&apos;à l&apos;identification de ces leviers, dans la limite de 3 mois
+          supplémentaires.
         </p>
         <p>
           Cet engagement est conditionné à la participation active du client : présence aux séances,
