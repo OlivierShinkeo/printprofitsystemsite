@@ -1,6 +1,7 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { LegalList } from "@/components/legal/legal-list";
 import { CompanyBlock } from "@/components/legal/company-block";
+import { CONTACT_EMAIL_LEGAL } from "@/lib/site-config";
 import { buildMetadata } from "@/lib/metadata";
 
 export const metadata = buildMetadata({
@@ -15,140 +16,198 @@ const sections: LegalSection[] = [
     content: <CompanyBlock />,
   },
   {
-    heading: "2. Objet",
+    heading: "2. Champ d'application",
     content: (
       <>
         <p>
-          Les présentes Conditions Générales de Vente régissent la vente de produits et services
-          proposés par Shinkéo, incluant notamment :
+          Les présentes conditions générales de vente (CGV) s&apos;appliquent à toute vente de
+          l&apos;accompagnement Print Profit System™.
         </p>
+        <p>
+          Elles sont réservées exclusivement aux clients professionnels (entreprises, indépendants,
+          sociétés) agissant pour les besoins de leur activité.
+        </p>
+        <p>
+          Toute commande vaut reconnaissance de la qualité de professionnel du client et acceptation
+          sans réserve des présentes CGV.
+        </p>
+      </>
+    ),
+  },
+  {
+    heading: "3. Description de l'accompagnement",
+    content: (
+      <>
+        <p>L&apos;accompagnement est hybride et comprend :</p>
         <LegalList
           items={[
-            "des produits numériques téléchargeables (ebooks, fiches mémo, ressources)",
-            "des applications en ligne accessibles par abonnement (calculateur de pertes)",
-            "des prestations associées",
+            "des séances en visioconférence avec Shinkéo",
+            "l'accès à un espace en ligne contenant des ressources (contenus, fiches, ebooks)",
+            "l'accès à l'application de calcul des pertes pendant toute la durée de l'accompagnement",
           ]}
         />
-      </>
-    ),
-  },
-  {
-    heading: "3. Description des produits et services",
-    content: (
-      <>
         <p>
-          <strong className="font-semibold text-navy-800">3.1 Produits numériques</strong>
-          <br />
-          Les ebooks, fiches et ressources sont fournis sous format numérique. Ils sont accessibles
-          immédiatement après paiement.
+          La durée, le nombre de séances et le contenu précis sont indiqués sur la page de vente ou
+          dans la proposition commerciale remise au client.
         </p>
         <p>
-          <strong className="font-semibold text-navy-800">3.2 Application en ligne (SaaS)</strong>
-          <br />
-          Le calculateur de pertes est une application accessible en ligne. L&apos;accès est
-          conditionné à un abonnement actif.
+          Les ressources et outils sont inclus dans l&apos;accompagnement et ne sont pas vendus
+          séparément.
         </p>
       </>
     ),
   },
   {
-    heading: "4. Accès aux produits",
-    content: (
-      <LegalList
-        items={[
-          "Les produits numériques sont accessibles immédiatement après paiement.",
-          "L'accès au service SaaS est activé après validation du paiement et reste actif tant que l'abonnement est en cours.",
-        ]}
-      />
-    ),
-  },
-  {
-    heading: "5. Tarifs",
-    content: (
-      <>
-        <p>Les prix sont indiqués en euros HT (ou TTC si applicable).</p>
-        <p>Le vendeur se réserve le droit de modifier ses tarifs à tout moment, sans effet rétroactif.</p>
-      </>
-    ),
-  },
-  {
-    heading: "6. Modalités de paiement",
-    content: (
-      <>
-        <p>Le paiement est réalisé via Stripe.</p>
-        <p>Pour les abonnements :</p>
-        <LegalList items={["la facturation est mensuelle", "l'abonnement est reconduit automatiquement"]} />
-      </>
-    ),
-  },
-  {
-    heading: "7. Résiliation",
-    content: (
-      <>
-        <p>Le client peut résilier son abonnement à tout moment.</p>
-        <p>La résiliation prend effet à la fin de la période en cours.</p>
-        <p>Aucun remboursement ne sera effectué pour une période entamée.</p>
-      </>
-    ),
-  },
-  {
-    heading: "8. Droit de rétractation",
+    heading: "4. Tarifs",
     content: (
       <>
         <p>
-          <strong className="font-semibold text-navy-800">Produits numériques</strong>
-          <br />
-          Conformément à l&apos;article L221-28 du Code de la consommation, le droit de rétractation
-          ne s&apos;applique pas aux contenus numériques fournis immédiatement après paiement.
+          Les prix sont indiqués en euros hors taxes (HT), auxquels s&apos;ajoute la TVA au taux en
+          vigueur.
         </p>
-        <p>
-          <strong className="font-semibold text-navy-800">Services SaaS</strong>
-          <br />
-          Le client accepte expressément que l&apos;accès au service commence immédiatement après
-          paiement, ce qui exclut le droit de rétractation.
-        </p>
+        <p>Le prix applicable est celui affiché au moment de la commande.</p>
       </>
     ),
   },
   {
-    heading: "9. Responsabilité",
+    heading: "5. Modalités de paiement",
     content: (
       <>
-        <p>Le vendeur ne saurait être tenu responsable :</p>
+        <p>Le paiement s&apos;effectue par carte bancaire via Stripe ou par virement bancaire.</p>
+        <p>
+          Il peut être réalisé en une fois ou en plusieurs fois sans frais, selon l&apos;échéancier
+          proposé lors de la commande.
+        </p>
+        <p>
+          Le paiement échelonné est une facilité de paiement : la totalité des échéances reste due,
+          même en cas d&apos;arrêt de l&apos;accompagnement par le client.
+        </p>
+        <p>Tout retard de paiement entraîne de plein droit :</p>
         <LegalList
           items={[
-            "d'une mauvaise utilisation des produits",
-            "des décisions prises sur la base des analyses fournies",
-            "des pertes indirectes ou de manque à gagner",
+            "des pénalités de retard au taux de la BCE majoré de 10 points",
+            "une indemnité forfaitaire pour frais de recouvrement de 40 € (article L441-10 du Code de commerce)",
           ]}
         />
+        <p>Shinkéo se réserve le droit de suspendre l&apos;accès à l&apos;accompagnement en cas d&apos;impayé.</p>
       </>
     ),
   },
   {
-    heading: "10. Propriété intellectuelle",
+    heading: "6. Accès et déroulement",
     content: (
       <>
-        <p>Tous les contenus (ebooks, fiches, outils, application) sont protégés.</p>
-        <p>Toute reproduction, diffusion ou revente est interdite sans autorisation.</p>
+        <p>L&apos;accès à l&apos;espace en ligne est ouvert dès réception du premier paiement.</p>
+        <p>Les séances en visioconférence sont planifiées d&apos;un commun accord.</p>
+        <p>
+          Toute séance annulée moins de 24 h à l&apos;avance ou non honorée par le client est
+          considérée comme effectuée.
+        </p>
       </>
     ),
   },
   {
-    heading: "11. Données personnelles",
+    heading: "7. Absence de droit de rétractation et de remboursement",
     content: (
       <>
-        <p>Les données collectées sont utilisées dans le cadre de la relation commerciale.</p>
-        <p>Le client dispose d&apos;un droit d&apos;accès, de modification et de suppression.</p>
+        <p>
+          L&apos;accompagnement étant réservé aux professionnels, le droit de rétractation prévu par
+          le Code de la consommation ne s&apos;applique pas.
+        </p>
+        <p>
+          Aucun remboursement, total ou partiel, ne sera effectué, y compris en cas d&apos;arrêt de
+          l&apos;accompagnement en cours de route.
+        </p>
       </>
     ),
   },
   {
-    heading: "12. Droit applicable",
+    heading: "8. Engagement de Shinkéo",
+    content: (
+      <>
+        <p>
+          Shinkéo s&apos;engage à identifier avec le client, dans les 90 premiers jours de
+          l&apos;accompagnement, des leviers permettant de viser au minimum cinq points de marge
+          récupérables dans son activité d&apos;impression.
+        </p>
+        <p>
+          Si cet objectif n&apos;est pas atteint dans ce délai, l&apos;accompagnement est prolongé
+          sans frais jusqu&apos;à l&apos;identification de ces leviers, dans la limite de 3 mois
+          supplémentaires.
+        </p>
+        <p>
+          Cet engagement est conditionné à la participation active du client : présence aux séances,
+          transmission des données demandées et mise en œuvre des actions convenues.
+        </p>
+        <p>
+          Il porte sur l&apos;identification des leviers et non sur le résultat financier final, qui
+          dépend des décisions et de la mise en œuvre du client.
+        </p>
+      </>
+    ),
+  },
+  {
+    heading: "9. Obligations du client",
+    content: (
+      <p>
+        Le client s&apos;engage à fournir des informations exactes et complètes, à participer aux
+        séances et à conserver la confidentialité de ses identifiants d&apos;accès.
+      </p>
+    ),
+  },
+  {
+    heading: "10. Responsabilité",
+    content: (
+      <>
+        <p>Shinkéo est tenue à une obligation de moyens.</p>
+        <p>Shinkéo ne saurait être tenue responsable :</p>
+        <LegalList
+          items={[
+            "des décisions prises par le client sur la base des analyses fournies",
+            "des pertes indirectes ou du manque à gagner",
+          ]}
+        />
+        <p>
+          En tout état de cause, sa responsabilité est limitée au montant payé par le client au titre
+          de l&apos;accompagnement.
+        </p>
+      </>
+    ),
+  },
+  {
+    heading: "11. Propriété intellectuelle",
+    content: (
+      <>
+        <p>Les contenus, méthodes, outils et l&apos;application restent la propriété exclusive de Shinkéo.</p>
+        <p>
+          Le client bénéficie d&apos;un droit d&apos;utilisation pour son usage interne pendant la
+          durée de l&apos;accompagnement.
+        </p>
+        <p>Toute reproduction, diffusion ou revente est interdite sans autorisation écrite.</p>
+      </>
+    ),
+  },
+  {
+    heading: "12. Données personnelles",
+    content: (
+      <>
+        <p>Les données personnelles sont traitées conformément aux mentions légales du site.</p>
+        <p>
+          Le client dispose d&apos;un droit d&apos;accès, de rectification, d&apos;opposition et de
+          suppression en écrivant à {CONTACT_EMAIL_LEGAL}.
+        </p>
+      </>
+    ),
+  },
+  {
+    heading: "13. Droit applicable et litiges",
     content: (
       <>
         <p>Les présentes CGV sont soumises au droit français.</p>
-        <p>Tout litige relève des tribunaux compétents du siège social du vendeur.</p>
+        <p>
+          En cas de litige, les parties rechercheront d&apos;abord une solution amiable. À défaut, le
+          tribunal de commerce de Niort sera seul compétent.
+        </p>
       </>
     ),
   },
@@ -156,6 +215,6 @@ const sections: LegalSection[] = [
 
 export default function ConditionsGeneralesDeVentePage() {
   return (
-    <LegalPage title="Conditions générales de vente" updated="2 juillet 2026" sections={sections} />
+    <LegalPage title="Conditions générales de vente" updated="26 octobre 2026" sections={sections} />
   );
 }

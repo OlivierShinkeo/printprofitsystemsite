@@ -1,7 +1,7 @@
 import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { LegalList } from "@/components/legal/legal-list";
 import { CompanyBlock } from "@/components/legal/company-block";
-import { CONTACT_EMAIL_LEGAL, HOST } from "@/lib/site-config";
+import { COMPANY, CONTACT_EMAIL_LEGAL, HOST } from "@/lib/site-config";
 import { buildMetadata } from "@/lib/metadata";
 
 export const metadata = buildMetadata({
@@ -17,6 +17,7 @@ const sections: LegalSection[] = [
       <>
         <p>Le présent site est édité par :</p>
         <CompanyBlock />
+        <p>Directeur de la publication : {COMPANY.director}</p>
       </>
     ),
   },
@@ -39,12 +40,17 @@ const sections: LegalSection[] = [
     heading: "3. Activité",
     content: (
       <>
-        <p>Le site propose :</p>
+        <p>
+          Le site présente et commercialise Print Profit System™, un accompagnement destiné
+          exclusivement aux professionnels de l&apos;impression numérique, visant à identifier et
+          mettre en œuvre des leviers d&apos;amélioration de leur rentabilité.
+        </p>
+        <p>L&apos;accompagnement est hybride et comprend :</p>
         <LegalList
           items={[
-            "la vente de produits numériques (ebooks, fiches, ressources)",
+            "des séances en visioconférence",
+            "des ressources en ligne (contenus, fiches, ebooks)",
             "l'accès à une application en ligne (calculateur de pertes)",
-            "des services liés à l'optimisation des performances en impression numérique",
           ]}
         />
       </>
@@ -55,12 +61,12 @@ const sections: LegalSection[] = [
     content: (
       <>
         <p>
-          L&apos;ensemble des contenus présents sur le site (textes, images, graphismes, logos, vidéos,
-          outils, application) est la propriété exclusive de Shinkéo.
+          L&apos;ensemble des contenus présents sur le site et dans l&apos;accompagnement (textes,
+          images, vidéos, méthodes, outils, application, logos) est la propriété exclusive de Shinkéo.
         </p>
         <p>
           Toute reproduction, diffusion, modification ou utilisation, même partielle, sans autorisation
-          préalable est strictement interdite.
+          écrite préalable est strictement interdite.
         </p>
       </>
     ),
@@ -69,15 +75,14 @@ const sections: LegalSection[] = [
     heading: "5. Responsabilité",
     content: (
       <>
-        <p>L&apos;éditeur ne saurait être tenu responsable :</p>
-        <LegalList
-          items={[
-            "des erreurs ou omissions dans les informations diffusées",
-            "d'une mauvaise utilisation des produits ou services",
-            "des dommages indirects résultant de l'utilisation du site",
-          ]}
-        />
-        <p>L&apos;utilisateur est seul responsable de l&apos;utilisation qu&apos;il fait des informations et services proposés.</p>
+        <p>
+          Shinkéo s&apos;efforce d&apos;assurer l&apos;exactitude des informations diffusées sur le
+          site, sans pouvoir en garantir l&apos;exhaustivité.
+        </p>
+        <p>
+          Shinkéo ne saurait être tenue responsable des dommages indirects résultant de
+          l&apos;utilisation du site.
+        </p>
       </>
     ),
   },
@@ -86,15 +91,16 @@ const sections: LegalSection[] = [
     content: (
       <>
         <p>
-          Les informations collectées sur le site sont utilisées dans le cadre de la relation
-          commerciale avec les utilisateurs.
+          Les données collectées sont utilisées uniquement pour la gestion de la relation commerciale
+          et la communication avec les prospects et clients.
         </p>
         <p>Elles ne sont jamais revendues à des tiers.</p>
         <p>
-          Conformément à la réglementation en vigueur (RGPD), vous disposez d&apos;un droit d&apos;accès,
-          de modification et de suppression de vos données personnelles.
+          Conformément au RGPD, vous disposez d&apos;un droit d&apos;accès, de rectification,
+          d&apos;opposition et de suppression de vos données personnelles.
         </p>
         <p>Pour exercer ce droit, vous pouvez contacter : {CONTACT_EMAIL_LEGAL}</p>
+        <p>Vous pouvez également introduire une réclamation auprès de la CNIL (www.cnil.fr).</p>
       </>
     ),
   },
@@ -102,25 +108,20 @@ const sections: LegalSection[] = [
     heading: "7. Cookies",
     content: (
       <>
-        <p>Le site peut utiliser des cookies à des fins de fonctionnement, d&apos;analyse ou de marketing.</p>
+        <p>
+          Le site peut utiliser des cookies à des fins de fonctionnement, de mesure d&apos;audience ou
+          de marketing.
+        </p>
         <p>L&apos;utilisateur peut configurer son navigateur pour refuser les cookies.</p>
       </>
     ),
   },
   {
     heading: "8. Droit applicable",
-    content: (
-      <>
-        <p>Le présent site est soumis au droit français.</p>
-        <p>
-          En cas de litige, les tribunaux compétents seront ceux du ressort du siège social de
-          l&apos;éditeur.
-        </p>
-      </>
-    ),
+    content: <p>Le présent site est soumis au droit français.</p>,
   },
 ];
 
 export default function MentionsLegalesPage() {
-  return <LegalPage title="Mentions légales" updated="2 juillet 2026" sections={sections} />;
+  return <LegalPage title="Mentions légales" updated="26 octobre 2026" sections={sections} />;
 }
